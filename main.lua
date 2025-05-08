@@ -4,9 +4,6 @@ require "splash"
 require "slides"
 
 squick = {}
-uilayer = splash.getLayer(1000)
-alayer = splash.getLayer(1)
-blayer = splash.getLayer(2)
 
 function squick.load()
 	splash.setPrio("up")
