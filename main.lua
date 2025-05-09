@@ -2,6 +2,7 @@
 require "codex/codex"
 require "melty"
 require "slides"
+require "tools/chart"
 
 squick = {}
 
