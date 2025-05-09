@@ -11,9 +11,10 @@ store.slides = {}
 store.anims = {}
 store.insts = {}
 
-function slides.import(fp)
-	store.slides[#store.slides+1] = setmetatable({},slide)
-	local t = store.slides[#store.slides]
+function slides.import(key,fp)
+	store.slides[key] = setmetatable({},slide)
+	local t = store.slides[key]
+	t.key = key
 	t.temp = love.filesystem.load(fp)()
 	t.image = love.graphics.newImage(t.temp.ipath)
 	local sw = t.image:getWidth()
@@ -30,16 +31,17 @@ function slides.import(fp)
 	end
 	if t.temp.anims then
 		local a = t.temp.anims
-		store.anims[#store.anims+1] = {parent = t}
-		t.anims = store.anims[#store.anims]
+		store.anims[key] = {}
+		t.anims = store.anims[key]
 		for n = 1, #a, 1 do
 			t.anims[n] = setmetatable(
 				{
 					first = a[n][2],
 					last = a[n][3],
-					fps = a[n][4]
+					fps = a[n][4],
 					mh = a[n][5],
-					mv = a[n][6]
+					mv = a[n][6],
+					slide = t
 				},
 				anim
 			)
@@ -50,20 +52,14 @@ function slides.import(fp)
 			end
 		end
 	end
-	if t.temp.slides then
-		t.slides = {}
-		for n = 1, #t.temp.slides, 1 do
-			t.slides[n] = t.temp.slides[n]
+	if t.temp.tiles then
+		t.tiles = {}
+		for n = 1, #t.temp.tiles, 1 do
+			t.tiles[n] = t.temp.tiles[n]
 		end
 	end
 	t.temp = nil
 	return t
-end
-
-function slide:update(dt)
-	for n = 1, #self.anims, 1 do
-		self.anims[n]:update(dt)
-	end
 end
 
 function slide:present(quad,x,y)
@@ -71,28 +67,35 @@ function slide:present(quad,x,y)
 	love.graphics.draw(self.image,self.quads[quad],x,y)
 end
 
-function anims:getInstance(fpso)
-	if fpso then
-		local fps = fpso
-	else
-		local fps = self.fps
-	end
-	self.insts[#self.insts+1] = setmetatable({},instance)
-	local t = self.insts[#self.insts]
+function anim:getInstance(fpso)
+	local fpso = fpso or self.fps
+	local key = self.slide.key
+	store.insts[key][#store.insts[key]+1] = setmetatable({},instance)
+	local t = store.insts[key][#store.insts[key]]
+	t.anim = self
 	t.pos = self.first
 	t.dtc = 0
-	t.dtl = 1/self.fps
+	t.dtl = 1/self.fpso
 	return t
+end
+
+function slide:update(dt)
+	for k,v in next, store.insts[self.key] do
+		v:update(dt)
+	end
 end
 
 function instance:update(dt)
 	self.dtc = self.dtc + dt
 	if self.dtc > self.dtl then
+		if self.pos == self.anim.last then
+			self.pos = self.anim.first-self.anim.i
+		end
 		self.dtc = self.dtc - self.dtl
-		self.pos = self.pos + self.i
+		self.pos = self.pos + self.anim.i
 	end
 end
 
 function instance:draw(x,y)
-	self.anim
+	self.anim.slide:present(self.pos,x,y)
 end
