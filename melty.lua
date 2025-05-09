@@ -1,9 +1,9 @@
 
-splash = {}
+melty = {}
 local layers = {}
 local keys = {}
 
-function splash.getLayer(a) -- we should not end up in the splash dungeon.
+function melty.getLayer(a) -- if you achieve melty panic please tell me.
 	if layers[a] == nil then
 		layers[a] = {}
 		if keys[1] == nil then keys[1] = a else
@@ -18,7 +18,7 @@ function splash.getLayer(a) -- we should not end up in the splash dungeon.
 					cond = false
 				elseif a == keys[pos] then
 					cond = false
-					print("error code: splash dungeon")
+					print("error code: melty panic")
 				else
 					pos = pos + 1
 				end
@@ -28,12 +28,12 @@ function splash.getLayer(a) -- we should not end up in the splash dungeon.
 	return layers[a]
 end
 
-function splash.setPrio(dir)
-	if dir == "up" then splash.draw = splash.drawup end
-	if dir == "down" then splash.draw = splash.drawdown end
+function melty.setPrio(dir)
+	if dir == "up" then melty.draw = melty.drawup end
+	if dir == "down" then melty.draw = melty.drawdown end
 end
 
-function splash.drawup()
+function melty.drawup()
 	for n = 1, #keys, 1 do
 		for k, v in next, layers[keys[n]] do
 			v()
@@ -41,7 +41,7 @@ function splash.drawup()
 	end
 end
 
-function splash.drawdown()
+function melty.drawdown()
 	for n = #keys, 1, -1 do
 		for k, v in next, layers[keys[n]] do
 			v()

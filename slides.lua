@@ -6,9 +6,14 @@ local anim = {}
 anim.__index = anim
 local instance = {}
 instance.__index = instance
+local store = {}
+store.slides = {}
+store.anims = {}
+store.insts = {}
 
 function slides.import(fp)
-	local t = setmetatable({},slide)
+	store.slides[#store.slides+1] = setmetatable({},slide)
+	local t = store.slides[#store.slides]
 	t.temp = love.filesystem.load(fp)()
 	t.image = love.graphics.newImage(t.temp.ipath)
 	local sw = t.image:getWidth()
@@ -25,9 +30,10 @@ function slides.import(fp)
 	end
 	if t.temp.anims then
 		local a = t.temp.anims
-		t.anims = {}
+		store.anims[#store.anims+1] = {parent = t}
+		t.anims = store.anims[#store.anims]
 		for n = 1, #a, 1 do
-			t.anims[a[n][1]] = setmetatable(
+			t.anims[n] = setmetatable(
 				{
 					first = a[n][2],
 					last = a[n][3],
@@ -38,9 +44,9 @@ function slides.import(fp)
 				anim
 			)
 			if a[n][2] > a[n][3] then 
-				t.anims[a[n][1]]["i"] = -1
+				t.anims[n]["i"] = -1
 			else
-				t.anims[a[n][1]]["i"] = 1
+				t.anims[n]["i"] = 1
 			end
 		end
 	end
@@ -54,6 +60,12 @@ function slides.import(fp)
 	return t
 end
 
+function slide:update(dt)
+	for n = 1, #self.anims, 1 do
+		self.anims[n]:update(dt)
+	end
+end
+
 function slide:present(quad,x,y)
 	love.graphics.setColor(1,1,1,1)
 	love.graphics.draw(self.image,self.quads[quad],x,y)
@@ -65,9 +77,22 @@ function anims:getInstance(fpso)
 	else
 		local fps = self.fps
 	end
-	local t = setmetatable({},instance)
-	t.anim = self
+	self.insts[#self.insts+1] = setmetatable({},instance)
+	local t = self.insts[#self.insts]
 	t.pos = self.first
-	t.dtc = 1/self.fps
+	t.dtc = 0
+	t.dtl = 1/self.fps
 	return t
+end
+
+function instance:update(dt)
+	self.dtc = self.dtc + dt
+	if self.dtc > self.dtl then
+		self.dtc = self.dtc - self.dtl
+		self.pos = self.pos + self.i
+	end
+end
+
+function instance:draw(x,y)
+	self.anim
 end
