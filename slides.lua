@@ -4,6 +4,8 @@ local slide = {}
 slide.__index = slide
 local anim = {}
 anim.__index = anim
+local instance = {}
+instance.__index = instance
 
 function slides.import(fp)
 	local t = setmetatable({},slide)
@@ -48,5 +50,24 @@ function slides.import(fp)
 			t.slides[n] = t.temp.slides[n]
 		end
 	end
+	t.temp = nil
+	return t
+end
+
+function slide:present(quad,x,y)
+	love.graphics.setColor(1,1,1,1)
+	love.graphics.draw(self.image,self.quads[quad],x,y)
+end
+
+function anims:getInstance(fpso)
+	if fpso then
+		local fps = fpso
+	else
+		local fps = self.fps
+	end
+	local t = setmetatable({},instance)
+	t.anim = self
+	t.pos = self.first
+	t.dtc = 1/self.fps
 	return t
 end
