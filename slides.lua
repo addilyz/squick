@@ -75,8 +75,14 @@ function anim:getInstance(fpso)
 	t.anim = self
 	t.pos = self.first
 	t.dtc = 0
-	t.dtl = 1/self.fpso
+	t.dtl = 1/fpso
 	return t
+end
+
+function slides.update(dt)
+	for k,v in next, store.slides do
+		v:update(dt)
+	end
 end
 
 function slide:update(dt)
@@ -87,7 +93,7 @@ end
 
 function instance:update(dt)
 	self.dtc = self.dtc + dt
-	if self.dtc > self.dtl then
+	if self.dtc >= self.dtl then
 		if self.pos == self.anim.last then
 			self.pos = self.anim.first-self.anim.i
 		end
