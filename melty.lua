@@ -12,7 +12,8 @@ function melty.getLayer(a) -- if you achieve melty panic please tell me.
 			if keys[pos] == nil then
 				keys[pos] = a
 				cond = false
-			elseif a < keys[pos] then 					table.insert(keys,pos,a)
+			elseif a < keys[pos] then
+				table.insert(keys,pos,a)
 				cond = false
 			elseif a == keys[pos] then
 				cond = false
