@@ -11,9 +11,11 @@ local project = {}
 local pointex = {}
 love.graphics.setDefaultFilter("nearest","nearest")
 local camcan = love.graphics.newCanvas(res[1],res[2])
+local floe = {}
 project.__index = project
 
 function codex.load.chart()
+	print("haii")
 	local tex = love.graphics.newCanvas()
 	love.graphics.setBackgroundColor(.11,.11,.1)
 	love.graphics.setCanvas(tex)
@@ -21,9 +23,12 @@ function codex.load.chart()
 	love.graphics.setCanvas()
 	local idt = tex:newImageData()
 	pointex = love.graphics.newImage(idt)
+	floe = melty.getLayer(1)
+	floe.chart = chart.drawf
 end
 
 function codex.keypressed.chart(k)
+	print(k)
 	if k == "down" then curs[2] = curs[2] + 1 down[k] = true end
 	if k == "up" then curs[2] = curs[2] - 1 down[k] = true end
 	if k == "left" then curs[1] = curs[1] - 1 down[k] = true end
@@ -62,7 +67,7 @@ function codex.keyreleased.chart(k)
 	end
 end
 
-function codex.draw.chart()
+function chart.drawf()
 	love.graphics.push()
 	love.graphics.setCanvas(camcan)
 	love.graphics.clear()
