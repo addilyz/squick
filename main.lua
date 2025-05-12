@@ -9,11 +9,11 @@ squick = {}
 melty.setPrio("up")
 test = {
 	defaultSel = 2,
-	title = "hello world",
-	description = "glorifying god through transition",
-	selections = {"yes", "no"},
-	selOuts = {love.event.quit, codex.remove}
-	selArgs = {2 = {""}}
+	title = "Quit App",
+	description = "Close the app? Unsaved data will be lost.",
+	selections = {"Yes", "No"},
+	selOuts = {love.event.quit, codex.remove},
+	selArgs = {{},{"bubble"}}
 }
 
 function squick.update(dt)

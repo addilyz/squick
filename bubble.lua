@@ -31,7 +31,7 @@ function bubble.keypressed(k)
 	if k == "right" then bubble.sel[2] = bubble.sel[2] + 1 end
 	if k == "space" or k == "return" then
 		if type(bubble.data.selOuts[bubble.sel[2]]) == "function" then
-			bubble.data.selOuts[bubble.sel[2]]()
+			bubble.data.selOuts[bubble.sel[2]](bubble.data.selArgs[bubble.sel[2]])
 		end
 	end
 end
