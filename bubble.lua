@@ -9,14 +9,14 @@ local theme = {
 	text = {r = 1, g = 1, b = 1, a = 1}
 }
 local spec = {}
-
+local floa = 0
 
 function bubble.open(tab,colortheme)
 	bubble.data = tab
 	bubble.sel = {false,bubble.data.defaultSel,false}
 	if colortheme then theme = colortheme end
-	if melty.prio == "up" then floe = melty.getLayer(10000) end
-	if melty.prio == "down" then floe = melty.getLayer(1) end
+	if melty.prio == "up" then floa = 10000 floe = melty.getLayer(10000) end
+	if melty.prio == "down" then floa = 1 floe = melty.getLayer(1) end
 	floe.bubble = bubble.floefunc
 	spec[1] = love.graphics.getWidth()/2
 	spec[2] = love.graphics.getHeight()/2
@@ -34,6 +34,12 @@ function bubble.keypressed(k)
 			bubble.data.selOuts[bubble.sel[2]](bubble.data.selArgs[bubble.sel[2]])
 		end
 	end
+end
+
+function bubble.close()
+	melty.remove("bubble",{floa})
+	codex.delete("bubble")
+	bubble.data = nil	
 end
 
 function bubble.mousepressed(mx,my,mb)

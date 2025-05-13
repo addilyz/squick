@@ -12,8 +12,8 @@ test = {
 	title = "Quit App",
 	description = "Close the app? Unsaved data will be lost.",
 	selections = {"Yes", "No"},
-	selOuts = {love.event.quit, codex.remove},
-	selArgs = {{},{"bubble"}}
+	selOuts = {love.event.quit, bubble.close},
+	selArgs = {{},{}}
 }
 
 function squick.update(dt)

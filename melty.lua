@@ -1,5 +1,7 @@
 
 melty = {}
+local layer = {}
+layer.__index = layer
 local layers = {}
 local keys = {}
 
@@ -24,6 +26,20 @@ function melty.getLayer(a) -- if you achieve melty panic please tell me.
 		end
 	end
 	return layers[a]
+end
+
+function melty.remove(key,layertab)
+	if layertab then
+		for n = 1, #layertab, 1 do
+			layers[layertab[n]][key] = nil
+		end
+	else
+		for n = 1, #keys, 1 do
+			if layers[keys[n]][key] then
+				layers[keys[n]][key] = nil
+			end
+		end
+	end
 end
 
 function melty.setPrio(dir)
