@@ -5,7 +5,7 @@ local hack = {
 	11 = love.graphics.newFont("assets/Hack-Regular.ttf",11)
 	12 = love.graphics.newFont("assets/Hack-Regular.ttf",12)
 	13 = love.graphics.newFont("assets/Hack-Regular.ttf",13)
-	14 = love.graphics.newFont("assets/Hack-Regular.ttf",13)
+	14 = love.graphics.newFont("assets/Hack-Regular.ttf",14)
 }
 love.graphics.setFont(hack[11])
 

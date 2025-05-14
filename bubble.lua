@@ -10,16 +10,21 @@ local theme = {
 }
 local spec = {}
 local floa = 0
+local inst = {}
+inst.__index = inst
+local bubbles = {}
 
 function bubble.open(tab,colortheme)
-	bubble.data = tab
-	bubble.sel = {false,bubble.data.defaultSel,false}
+	bubbles[#bubbles+1] = setmetatable(tab,inst)
+	local t = bubbles[#bubbles]
+	bubble.sel = {false,t.defaultSel,false}
 	if colortheme then theme = colortheme end
 	if melty.prio == "up" then floa = 10000 floe = melty.getLayer(10000) end
 	if melty.prio == "down" then floa = 1 floe = melty.getLayer(1) end
-	floe.bubble = bubble.floefunc
+	floe[t.key] = inst.floefunc
 	spec[1] = love.graphics.getWidth()/2
-	spec[2] = love.graphics.getHeight()/2
+	spec[2] = love.graphics.getHeight()/2i
+	return t
 end
 
 function bubble.update()
@@ -36,10 +41,11 @@ function bubble.keypressed(k)
 	end
 end
 
-function bubble.close()
-	melty.remove("bubble",{floa})
+function bubble.close(key)
+	melty.remove("key",{floa})
 	codex.delete("bubble")
-	bubble.data = nil	
+	for n=1, #bubbles, 1 do
+	if bubbles[n]["key"] == key then bubbles[n] = nil end
 end
 
 function bubble.mousepressed(mx,my,mb)
