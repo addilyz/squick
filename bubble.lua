@@ -23,7 +23,7 @@ function bubble.open(tab,colortheme)
 	if melty.prio == "down" then floa = 1 floe = melty.getLayer(1) end
 	floe[t.key] = inst.floefunc
 	spec[1] = love.graphics.getWidth()/2
-	spec[2] = love.graphics.getHeight()/2i
+	spec[2] = love.graphics.getHeight()/2
 	return t
 end
 
@@ -32,6 +32,10 @@ function bubble.update()
 end
 
 function bubble.keypressed(k)
+	
+end
+
+function inst:keypressed(k)
 	if k == "left" then bubble.sel[2] = bubble.sel[2] - 1 end
 	if k == "right" then bubble.sel[2] = bubble.sel[2] + 1 end
 	if k == "space" or k == "return" then
@@ -42,10 +46,10 @@ function bubble.keypressed(k)
 end
 
 function bubble.close(key)
-	melty.remove("key",{floa})
-	codex.delete("bubble")
+	melty.remove(key,{floa})
 	for n=1, #bubbles, 1 do
-	if bubbles[n]["key"] == key then bubbles[n] = nil end
+		if bubbles[n]["key"] == key then bubbles[n] = nil end
+	end
 end
 
 function bubble.mousepressed(mx,my,mb)
@@ -83,5 +87,3 @@ function bubble.setColor(key)
 		theme[key]["a"]
 	)
 end
-
-return bubble
