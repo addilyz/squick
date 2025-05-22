@@ -10,7 +10,8 @@ local hack = {
 love.graphics.setFont(hack[11])
 
 function codex.load.stage(args)
-	
+	stage.page = codex.page.getPage(25)
+	stage.page.stage = stage.draw
 end
 
 function codex.textinput.stage(t)

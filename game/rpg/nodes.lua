@@ -6,6 +6,7 @@ node.maps = {}
 node.page = 13 -- battles will have their base page start at 11.
 local assets = {}
 local lg = love.graphics
+local size = {18,16}
 
 function node.loadMap(table)
 	node.maps[#node.maps+1] = setmetatable(table,map)
@@ -41,10 +42,11 @@ function map:draw()
 end
 
 function node.prerenderGUI(scale)
-	assets.dia = node.diamondRTT(scale*40,scale*50,{.8,.7,.3,1})
+	lg.setLineWidth(4)
+	assets.dia = node.diamondRTT(scale*16,scale*20,{.8,.7,.3,1})
 end
 
-function node.diamondRTT(w,h,c)
+function node.diamondRTT(w,h,c,c2,lw)
 	local tex = lg.newCanvas(w,h)
 	lg.setColor(1,1,1,1)
 	if type(c) == "table" then
@@ -62,6 +64,19 @@ function node.diamondRTT(w,h,c)
 		0,h/2
 	}
 	lg.polygon("fill",v)
+	if type(c2) == "table" then
+		if c[1] == nil then
+			lg.setColor(c.r,c.g,c.b,c.a)
+		else
+			lg.setColor(c[1],c[2],c[3],c[4])
+		end
+		local ls = lg.getLineWidth()
+		if type(lw) == "number" then
+			lg.setLineWidth(lw)
+		end
+		lg.polygon("line",v)
+		lg.setLineWidth(ls)
+	end
 	lg.setCanvas()
 	local o = tex:newImageData()
 	tex = nil
