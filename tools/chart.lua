@@ -11,7 +11,7 @@ local project = {}
 local pointex = {}
 love.graphics.setDefaultFilter("nearest","nearest")
 local camcan = love.graphics.newCanvas(res[1],res[2])
-local floe = {}
+local page = {}
 project.__index = project
 
 function codex.load.chart()
@@ -23,8 +23,8 @@ function codex.load.chart()
 	love.graphics.setCanvas()
 	local idt = tex:newImageData()
 	pointex = love.graphics.newImage(idt)
-	floe = melty.getLayer(1)
-	floe.chart = chart.drawf
+	page = codex.pages.getPage(1)
+	page.chart = chart.drawf
 end
 
 function codex.keypressed.chart(k)

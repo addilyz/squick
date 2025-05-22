@@ -1,20 +1,25 @@
 
 require "codex/codex"
-require "melty"
 require "slides"
-require "tools/chart"
+-- require "tools/chart"
 require "bubble"
+nodes = require "game/rpg/nodes"
 
 squick = {}
-melty.setPrio("up")
 test = {
 	defaultSel = 2,
-	title = "Quit App",
-	description = "Close the app? Unsaved data will be lost.",
+	title = "Quit Editor",
+	key = "exitdialog",
+	description = "Close the program? Unsaved data will be lost.",
 	selections = {"Yes", "No"},
 	selOuts = {love.event.quit, bubble.close},
 	selArgs = {{},{}}
 }
+
+function squick.load()
+	nodes.loadMap({surface={{224,246}}})
+	nodes.codex()
+end
 
 function squick.update(dt)
 
@@ -22,18 +27,15 @@ end
 
 function squick.keypressed(k)
 	--print(k.."squick")
-	if k == "escape" and bubble.data == nil then 
-		bubble.open(test)
-		codex.add("bubble",bubble)
+	if k == "escape"--[[ and bubble.data == nil]] then 
+		love.event.quit()
+		--bubble.open(test)
+		--codex.add("bubble",bubble)
 	end
 end
 
 function squick.keyreleased(k)
 
-end
-
-function squick.draw()
-	melty.draw()
 end
 
 codex.add("squick",squick)

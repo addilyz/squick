@@ -19,9 +19,8 @@ function bubble.open(tab,colortheme)
 	local t = bubbles[#bubbles]
 	bubble.sel = {false,t.defaultSel,false}
 	if colortheme then theme = colortheme end
-	if melty.prio == "up" then floa = 10000 floe = melty.getLayer(10000) end
-	if melty.prio == "down" then floa = 1 floe = melty.getLayer(1) end
-	floe[t.key] = inst.floefunc
+	floe = codex.pages.getPage(10000)
+	floe[t.key] = bubble.floefunc
 	spec[1] = love.graphics.getWidth()/2
 	spec[2] = love.graphics.getHeight()/2
 	return t
@@ -35,7 +34,7 @@ function bubble.keypressed(k)
 	
 end
 
-function inst:keypressed(k)
+function bubble.keypressed(k)
 	if k == "left" then bubble.sel[2] = bubble.sel[2] - 1 end
 	if k == "right" then bubble.sel[2] = bubble.sel[2] + 1 end
 	if k == "space" or k == "return" then
