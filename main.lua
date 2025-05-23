@@ -4,6 +4,8 @@ require "slides"
 -- require "tools/chart"
 require "bubble"
 nodes = require "game/rpg/nodes"
+require "index"
+--require "tools/stage"
 
 squick = {}
 test = {
@@ -19,6 +21,7 @@ test = {
 function squick.load()
 	nodes.loadMap({surface={{224,246}}})
 	nodes.codex()
+	index.structure()
 end
 
 function squick.update(dt)

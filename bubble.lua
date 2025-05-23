@@ -1,12 +1,12 @@
 
 
 bubble = {}
-local floe = {}
+local page = {}
 local theme = {
-	background = {r = .20, g = .19, b = .20, a = 1},
-	primary = {r = .18, g = .17, b = .18, a = 1},
-	activity = {r = .8, g = .8, b = .8, a = 1},
-	text = {r = 1, g = 1, b = 1, a = 1}
+	background = {r=.20,g=.19,b=.20,a = 1},
+	primary = {r=.18,g=.17,b=.18,a=1},
+	activity = {r=.8,g=.8,b=.8,a=1},
+	text = {r=1,g=1,b=1,a=1}
 }
 local spec = {}
 local floa = 0
@@ -18,9 +18,9 @@ function bubble.open(tab,colortheme)
 	bubbles[#bubbles+1] = setmetatable(tab,inst)
 	local t = bubbles[#bubbles]
 	bubble.sel = {false,t.defaultSel,false}
-	if colortheme then theme = colortheme end
-	floe = codex.pages.getPage(10000)
-	floe[t.key] = bubble.floefunc
+	if colortheme then theme=colortheme end
+	page = codex.pages.getPage(10000)
+	page[t.key] = bubble.floefunc
 	spec[1] = love.graphics.getWidth()/2
 	spec[2] = love.graphics.getHeight()/2
 	return t
