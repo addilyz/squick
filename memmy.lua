@@ -1,13 +1,55 @@
 
 memmy = {}
-index = {}
+local index = {}
 local file = {}
 file.__index = file
 local fs = love.filesystem
+local fx = love.graphics
 local struct = fs.load("game/index.lua")()
 struct.tags = {{"code blob",".lua"},{"dir","/"},{"plaintext",".txt"}}
 local catalog = {}
 local root = {}
+local window = {0,0,0,0}
+
+function codex.load.memmy()
+	index.structure()
+	index.loc = "root"
+	index.cat = catalog[index.loc]
+	index.cur = 1
+	index.pre = {}
+	if struct.window[1] < 1 then
+		memmy.ratioResize(fx.getWidth(),fx.getHeight())
+	end
+	index.page = codex.pages.getPage(500)
+	index.page.memmy = memmy.draw
+end
+
+function memmy.draw()
+	fx.push()
+	fx.setColor(.8,.8,.8,1)
+	fx.translate(window[3]/2,window[4]/2)
+	fx.rectangle("fill",-window[1]/2,-window[2]/2,window[1],window[2])
+	fx.pop()
+end
+
+function codex.resize.memmy(w,h)
+	memmy.ratioResize(w,h)
+end
+
+function codex.keyreleased.memmy(k)
+	if k == "lshift" or k == "rshift" then memmy.ratioResize(fx.getWidth(),fx.getHeight()) end
+end
+
+function memmy.ratioResize(w,h)
+	if w < 800 then w = 800 end
+	if h < 600 then h = 600 end
+	window[1] = w*struct.window[1]
+	window[2] = h*struct.window[2]
+	window[3] = w
+	window[4] = h
+	window[5] = (window[1] - window[3])
+	window[6] = (window[2] - window[4])
+end
 
 function index.filter(ft)
 	local rmbatch = {}
@@ -74,4 +116,4 @@ function index.dir(d,route,cstr)
 	end
 end
 
-return index
+return memmy
