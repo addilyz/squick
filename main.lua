@@ -4,7 +4,7 @@ require "slides"
 -- require "tools/chart"
 require "bubble"
 nodes = require "game/rpg/nodes"
-require "index"
+require "memmy"
 --require "tools/stage"
 
 squick = {}

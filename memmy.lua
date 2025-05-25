@@ -1,17 +1,11 @@
 
+memmy = {}
 index = {}
 local file = {}
 file.__index = file
 local fs = love.filesystem
-local struct = {}
-struct.ignore = {
-	{"."},
-	{
-		"LICENSE","codex","tools","main.lua","README","bubble.lua",
-		"index.lua","conf.lua","slides.lua"
-	}
-}
-struct.tags = {{"code blob",".lua"},{"dir","/"},{"plaintext",""}}
+local struct = fs.load("game/index.lua")()
+struct.tags = {{"code blob",".lua"},{"dir","/"},{"plaintext",".txt"}}
 local catalog = {}
 local root = {}
 
@@ -40,10 +34,10 @@ function index.batchrm(ft,rmb)
 	end	
 end
 
-function index.file(key,dir)
+function index.loadFile(catalog,key,dir)
 	index.files[key] = {}
-	index.files[key].file = setmetatable(fs.load(dir)(),file)
-	index.files[key].addr = dir
+	index.files[key].file = setmetatable(fs.load(dir .. key)(),file)
+	index.files[key].addr = dir .. key
 	return index.files[key]
 end
 
@@ -56,7 +50,7 @@ function index.structure()
 		print(tostring(n) .. ". " .. root[n])
 		it = fs.getInfo(root[n])
 		if it.type == "directory" then
-			index.dir(root[n],"/")
+			index.dir(root[n],"/","root")
 		end
 		for k,v in next, it do
 			--print(k)
@@ -64,17 +58,18 @@ function index.structure()
 	end
 end
 
-function index.dir(d,route)
-	local cstr = route .. d
-	catalog[cstr] = fs.getDirectoryItems(cstr)
+function index.dir(d,route,cstr)
+	local bstr = route .. d .. "/"
+	local dstr = cstr .. d
+	catalog[cstr] = fs.getDirectoryItems(bstr)
 	local dtab = catalog[cstr]
 	index.filter(dtab)
 	local it = {}
 	for n = 1, #dtab, 1 do
-		it = fs.getInfo(root[n])
-		if it.type == "directory" then
-			print(cstr)
-			index.dir(dtab[n],cstr .. "/")
+		it = fs.getInfo(bstr .. dtab[n])
+		if it and it.type == "directory" then
+			print(dstr .. dtab[n])
+			index.dir(dtab[n],bstr,dstr)
 		end
 	end
 end
