@@ -46,7 +46,7 @@ function memmy.draw()
 	fx.pop()
 end
 
-function codex.resize.memmy(w,h)
+--[[function codex.resize.memmy(w,h)
 	local scr = {}
 	if w < h and w > 100  then
 		scr.mode = "portrait"
@@ -64,7 +64,7 @@ function codex.resize.memmy(w,h)
 	end
 	memmy.postboot(scr)
 	memmy.ratioResize(w,h)
-end
+end]]--
 
 function codex.keyreleased.memmy(k)
 	if k == "lshift" or k == "rshift" then memmy.ratioResize(fx.getWidth(),fx.getHeight()) end

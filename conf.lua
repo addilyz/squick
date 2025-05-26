@@ -1,6 +1,6 @@
 
 function love.conf(t)
-	t.identity = "cxtk"
+	t.identity = "squick"
 	t.appendidentity = true
 	t.console = true
 	t.version = "11.5"
@@ -12,4 +12,6 @@ function love.conf(t)
 	t.window.height = 16
 	t.window.minwidth = 800
 	t.window.minheight = 600
+	t.externalstorage = false
+	t.audio.mixwithsystem = true
 end
