@@ -18,12 +18,21 @@ test = {
 	selArgs = {{},{}}
 }
 cxscreen = {}
+local frames = 0
 
 function squick.load()
 	--nodes.loadMap({surface={{224,246}}})
 	--nodes.codex()
 	love.graphics.setBackgroundColor(1,1,1,1)
-	codex.update.postboot = squick.postboot
+	codex.update.boottick = squick.boottick
+end
+
+function squick.boottick()
+	frames = frames + 1
+	if frames > 4 then
+		codex.update.postboot = squick.postboot
+		codex.delete("boottick")
+	end
 end
 
 function squick.postboot()
@@ -32,16 +41,18 @@ function squick.postboot()
 	if w < h and w > 100  then
 		cxscreen.mode = "portrait"
 		cxscreen[1] = w
-		cxscreen[2] = h
+		cxscreen[2] = (cxscreen[1]/800)*600
 	elseif w < 100 then
 		love.window.setMode(800,600)
 		cxscreen[1] = 800
 		cxscreen[2] = 600
 		cxscreen.mode = "window"
 	else
+		cxscreen.mode = "window"
 		cxscreen[1] = 800
 		cxscreen[2] = 600
 	end
+	memmy.postboot(cxscreen)
 	codex.delete("postboot")
 end
 

@@ -24,15 +24,45 @@ function codex.load.memmy()
 	index.page.memmy = memmy.draw
 end
 
+function memmy.postboot(scr)
+	if scr.mode == "portrait" then
+		window[1] = 0
+		window[2] = 0
+		window[3] = 0
+		window[4] = 0
+	end
+end
+
 function memmy.draw()
 	fx.push()
 	fx.setColor(.8,.8,.8,1)
 	fx.translate(window[3]/2,window[4]/2)
 	fx.rectangle("fill",-window[1]/2,-window[2]/2,window[1],window[2])
 	fx.pop()
+	fx.push()
+	fx.scale(12)
+	fx.setColor(0,0,0,1)
+	--fx.print(cxscreen.mode)
+	fx.pop()
 end
 
 function codex.resize.memmy(w,h)
+	local scr = {}
+	if w < h and w > 100  then
+		scr.mode = "portrait"
+		scr[1] = w
+		scr[2] = (cxscreen[1]/800)*600
+	elseif w < 100 then
+		love.window.setMode(800,600)
+		scr[1] = 800
+		scr[2] = 600
+		scr.mode = "window"
+	else
+		scr.mode = "window"
+		scr[1] = 800
+		scr[2] = 600
+	end
+	memmy.postboot(scr)
 	memmy.ratioResize(w,h)
 end
 
