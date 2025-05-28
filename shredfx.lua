@@ -10,9 +10,23 @@ vs.maxheight = 1000
 local scalar = 0
 local buffer = 1
 
-function shred.init(iw,ih)
+function shred.init(iw,ih,scale)
+	scale = scale or 0
 	vs.width = iw
 	vs.height = ih
+	scalar = scale
+end
+
+function shred.deriveScalar()
+	local sw = fx.getWdith()
+	local sh = fx.getHeight()
+	local swov = sw/vs.width
+	local shov = sh/vs.height
+	if swov < shov or swov == shov then
+		scalar = swov
+	else
+		scalar = shov
+	end
 end
 
 function shred.openTex()
@@ -23,14 +37,23 @@ end
 function shred.update()
 	if type(buffer) ~= "number" then
 		shred.update = nil
-		shred.draw = shred.hasBuffer
+		shred.drawFunc = shred.hasBuffer
 	end
+end
+
+function shred.draw()
+	shred.drawFunc()
+end
+
+function shred.drawFunc()
+
 end
 
 function shred.closeTexGetImg()
 	fx.setCanvas()
 	local id = cv:newImageData()
 	buffer = fx.newImage()
+	cv = nil
 end
 
 function shred.hasBuffer()

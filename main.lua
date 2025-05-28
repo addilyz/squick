@@ -6,6 +6,7 @@ require "bubble"
 --nodes = require "game/rpg/nodes"
 require "memmy"
 --require "tools/stage"
+require "shredfx"
 
 squick = {}
 squick.screen = {}
@@ -35,6 +36,8 @@ sqboot.gradientDestination = {1,1,1,1}
 sqboot.gradientDirection = {.01,.01,.01,0}
 sqboot.bootGradient = {0,0,0,1}
 sqboot.gFuncs = {}
+sqboot.ready = false
+sqboot.aligned = true
 sqboot.gPop = 0
 
 function squick.load()
@@ -58,6 +61,60 @@ function codex.update.squickBoot()
 	sqboot.gradientStep()
 end
 
+function sqboot.shredUp()
+	shred.init(squick.internal.width,squick.internal.height)
+	shred.deriveScalar()
+	local shredbottom = pages.getPage(1)
+	local shredtop = pages.getPage(999)
+	local shredout = pages.getPage(1000)
+	shredbottom.shred = shred.openTex()
+	shredtop.shred = shred.closeTexGetImg()
+	shredout.shred = shred.draw
+end
+
+function sqboot.bounce()
+	if sqboot.ready and sqboot.aligned then
+		sqboot.shredUp()
+		sqboot.tick = sqboot.gradientEscape
+	elseif sqboot.aligned == false then
+		sqboot.aligned = true
+	else
+		sqboot.aligned = false
+	end
+	if sqboot.aligned == false then
+		local gD = sqboot.gradientDirection
+		sqboot.gStore = {gD[1],gD[2],gD[3],gD[4]}
+		local gS = sqboot.gStore
+		gD[1] = -gS[1]
+		gD[2] = -gS[2]
+		gD[3] = -gS[3]
+		gD[4] = -gD[4]
+	else
+		local gD = sqboot.gradientDirection
+		local gS = sqboot.gStore
+		gD[1] = gS[1]
+		gD[2] = gS[2]
+		gD[3] = gS[3]
+		gD[4] = gS[4]
+	end
+	local des = sqboot.gradientDestination
+	local ope = sqboot.gradientStart
+	local store = {des[1],des[2],des[3],des[4]}
+	des[1] = ope[1]
+	des[2] = ope[2]
+	des[3] = ope[3]
+	des[4] = ope[4]
+	ope[1] = store[1]
+	ope[2] = store[2]
+	ope[3] = store[3]
+	ope[4] = store[4]
+	sqboot.setGradient()
+end
+
+function sqboot.tick()
+	sqboot.gradientCycle()
+end
+
 function sqboot.gradientStep()
 	sqboot.setGradient()
 end
@@ -72,10 +129,10 @@ function sqboot.setGradient()
 			sqboot.gFuncs[n] = sqboot.gradientUp
 		end
 	end
-	sqboot.gradientStep = sqboot.gradientCycle
+	sqboot.gradientStep = sqboot.tick
 end
 
-function sqboot.gradientCycle()
+function sqboot.gradientEscape()
 	for n = 1, 4, 1 do
 		sqboot.gFuncs[n](n)
 	end
@@ -87,6 +144,19 @@ function sqboot.gradientCycle()
 		codex.delete("squickBoot")
 		print("squickBoot deleted!")
 		sqboot = nil
+	else
+		sqboot.gPop = 0
+	end
+end
+
+function sqboot.gradientCycle()
+	for n = 1, 4, 1 do
+		sqboot.gFuncs[n](n)
+	end
+	local bG = sqboot.bootGradient
+	fx.setBackgroundColor(bG[1],bG[2],bG[3],bG[4])
+	if sqboot.gPop == 4 then
+		sqboot.bounce()
 	else
 		sqboot.gPop = 0
 	end
