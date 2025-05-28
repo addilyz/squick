@@ -7,6 +7,7 @@ require "bubble"
 require "memmy"
 --require "tools/stage"
 require "shredfx"
+o_ten_one = require "splashes/o-ten-one"
 
 squick = {}
 squick.screen = {}
@@ -31,14 +32,18 @@ local pages = codex.pages
 local sqreener = {}
 sqreener.frames = 0
 local sqboot = {}
-sqboot.gradientStart = {0,0,0,1}
-sqboot.gradientDestination = {1,1,1,1}
-sqboot.gradientDirection = {.01,.01,.01,0}
-sqboot.bootGradient = {0,0,0,1}
+sqboot.gradientStart = {1,1,1,1}
+sqboot.gradientDestination = {0,0,0,1}
+sqboot.gradientDirection = {-.01,-.01,-.01,0}
+sqboot.bootGradient = {1,1,1,1}
 sqboot.gFuncs = {}
 sqboot.ready = false
 sqboot.aligned = true
 sqboot.gPop = 0
+
+function squick.start()
+
+end
 
 function squick.load()
 	--nodes.loadMap({surface={{224,246}}})
@@ -55,6 +60,23 @@ function squick.drawBoot()
 	fx.rectangle("fill",0,0,squick.screen.width,squick.screen.height)
 	fx.setColor(0,0,0,1)
 	fx.print(fs.getSaveDirectory())
+end
+
+function squick.bootWithLOVE()
+	splash = o_ten_one()
+	splash.onDone = squick.start()
+end
+
+function squick.updateWithLOVE(dt)
+	splash:update(dt)
+end
+
+function squick.skippedWithLOVE()
+	splash:skip()
+end
+
+function squick.drawnWithLOVE()
+	splash:draw()
 end
 
 function codex.update.squickBoot()
