@@ -82,6 +82,7 @@ function sqboot.gradientCycle()
 		pages.expunge("squickBoot")
 		codex.delete("squickBoot")
 		print("squickBoot deleted!")
+		sqboot = nil
 	else
 		sqboot.gPop = 0
 	end
