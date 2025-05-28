@@ -5,7 +5,7 @@ function love.conf(t)
 	t.console = true
 	t.version = "11.5"
 	t.window.title = "squick"
-	t.window.resizable = true
+	t.window.resizable = false
 	t.window.highdpi = false
 	t.window.usedpiscale = false
 	t.window.width = 9
