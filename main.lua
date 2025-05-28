@@ -21,7 +21,9 @@ test = {
 	selOuts = {love.event.quit, bubble.close},
 	selArgs = {{},{}}
 }
-fs = love.filesystem
+local fs = love.filesystem
+local fx = love.graphics
+local pages = codex.pages
 local sqreener = {}
 sqreener.frames = 0
 local sqboot = {}
@@ -30,21 +32,23 @@ sqboot.gradientDestination = {1,1,1,1}
 sqboot.gradientDirection = {.01,.01,.01,0}
 sqboot.bootGradient = {0,0,0,1}
 sqboot.gFuncs = {}
+sqboot.gPop = 0
 
 function squick.load()
 	--nodes.loadMap({surface={{224,246}}})
 	--nodes.codex()
-	love.graphics.setBackgroundColor(sqboot.bootGradient[1],sqboot.bootGradient[2],sqboot.bootGradient[3],sqboot.bootGradient[4])
-	local page = codex.pages.getPage(500)
+	local bG = sqboot.bootGradient
+	fx.setBackgroundColor(bG[1],bG[2],bG[3],bG[4])
+	local page = pages.getPage(500)
 	page.squickBoot = squick.drawBoot()
 end
 
 function squick.drawBoot()
 	local bG = sqboot.bootGradient
-	love.graphics.setColor(bG[1],bG[2],bG[3],bG[4])
-	love.graphics.rectangle("fill",0,0,squick.screen.width,squick.screen.height)
-	love.graphics.setColor(0,0,0,1)
-	love.graphics.print(love.filesystem.getSaveDirectory())
+	fx.setColor(bG[1],bG[2],bG[3],bG[4])
+	fx.rectangle("fill",0,0,squick.screen.width,squick.screen.height)
+	fx.setColor(0,0,0,1)
+	fx.print(fs.getSaveDirectory())
 end
 
 function codex.update.squickBoot()
@@ -72,7 +76,15 @@ function sqboot.gradientCycle()
 	for n = 1, 4, 1 do
 		sqboot.gFuncs[n](n)
 	end
-	love.graphics.setBackgroundColor(sqboot.bootGradient[1],sqboot.bootGradient[2],sqboot.bootGradient[3],sqboot.bootGradient[4])
+	local bG = sqboot.bootGradient
+	fx.setBackgroundColor(bG[1],bG[2],bG[3],bG[4])
+	if sqboot.gPop == 4 then
+		pages.expunge("squickBoot")
+		codex.delete("squickBoot")
+		print("squickBoot deleted!")
+	else
+		sqboot.gPop = 0
+	end
 end
 
 function sqboot.gradientUp(n)
@@ -94,14 +106,14 @@ function sqboot.gradientDown(n)
 end
 
 function sqboot.empty(n)
-
+	sqboot.gPop = sqboot.gPop + 1
 end
 
 function codex.update.sqreener() -- sqreener detects phone.
 	sqreener.frames = sqreener.frames + 1
 	if sqreener.frames < 2 then
-		if type(love.filesystem.getInfo("config/default")) == "table" then
-			local sqrtab = love.filesystem.load("config/default")()
+		if type(fs.getInfo("config/default")) == "table" then
+			local sqrtab = fs.load("config/default")()
 			squick.screen = sqrtab.screen
 			codex.delete("sqreener")
 		end
@@ -112,8 +124,8 @@ function codex.update.sqreener() -- sqreener detects phone.
 end
 
 function sqreener.sqreen()
-	local w = love.graphics.getWidth()
-	local h = love.graphics.getHeight()
+	local w = fx.getWidth()
+	local h = fx.getHeight()
 	
 	if h > w and w > 10 then
 		squick.screen = {w,h}
@@ -132,8 +144,8 @@ function sqreener.frConfig()
 	ostring = ostring .. tonumber(squick.screen[1]) .. "," .. tonumber(squick.screen[2])
 	ostring = ostring .. "}\nt.screen.mode=" .. squick.screen.mode .. "\n"
 	ostring = ostring .. "return t"
-	love.filesystem.createDirectory("config")
-	love.filesystem.write("config/default",ostring)
+	fs.createDirectory("config")
+	fs.write("config/default",ostring)
 end
 
 function squick.update(dt)
