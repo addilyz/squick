@@ -24,19 +24,77 @@ test = {
 fs = love.filesystem
 local sqreener = {}
 sqreener.frames = 0
+local sqboot = {}
+sqboot.gradientStart = {0,0,0,1}
+sqboot.gradientDestination = {1,1,1,1}
+sqboot.gradientDirection = {.01,.01,.01,0}
+sqboot.bootGradient = {0,0,0,1}
+sqboot.gFuncs = {}
 
 function squick.load()
 	--nodes.loadMap({surface={{224,246}}})
 	--nodes.codex()
-	love.graphics.setBackgroundColor(1,1,1,1)
-	codex.update.boottick = squick.boottick
+	love.graphics.setBackgroundColor(sqboot.bootGradient[1],sqboot.bootGradient[2],sqboot.bootGradient[3],sqboot.bootGradient[4])
 	local page = codex.pages.getPage(500)
-	page.squick = squick.draw
+	page.squickBoot = squick.drawBoot()
 end
 
-function squick.draw()
+function squick.drawBoot()
+	local bG = sqboot.bootGradient
+	love.graphics.setColor(bG[1],bG[2],bG[3],bG[4])
+	love.graphics.rectangle("fill",0,0,squick.screen.width,squick.screen.height)
 	love.graphics.setColor(0,0,0,1)
 	love.graphics.print(love.filesystem.getSaveDirectory())
+end
+
+function codex.update.squickBoot()
+	sqboot.gradientStep()
+end
+
+function sqboot.gradientStep()
+	sqboot.setGradient()
+end
+
+function sqboot.setGradient()
+	for n = 1, 4, 1 do
+		if sqboot.gradientDirection[n] < 0 then
+			sqboot.gFuncs[n] = sqboot.gradientDown
+		elseif sqboot.gradientDirection == 0 then
+			sqboot.gFuncs[n] = sqboot.empty
+		else
+			sqboot.gFuncs[n] = sqboot.gradientUp
+		end
+	end
+	sqboot.gradientStep = sqboot.gradientCycle
+end
+
+function sqboot.gradientCycle()
+	for n = 1, 4, 1 do
+		sqboot.gFuncs[n](n)
+	end
+	love.graphics.setBackgroundColor(sqboot.bootGradient[1],sqboot.bootGradient[2],sqboot.bootGradient[3],sqboot.bootGradient[4])
+end
+
+function sqboot.gradientUp(n)
+	if sqboot.bootGradient[n] < sqboot.gradientDestination[n] then
+		sqboot.bootGradient[n] = sqboot.bootGradient[n] + sqboot.gradientDirection[n]
+	else
+		sqboot.bootGradient[n] = sqboot.gradientDestination[n]
+		sqboot.gFuncs[n] = sqboot.empty
+	end
+end
+
+function sqboot.gradientDown(n)
+	if sqboot.bootGradient[n] > sqboot.gradientDestination[n] then
+		sqboot.bootGradient[n] = sqboot.bootGradient[n] + sqboot.gradientDirection[n]
+	else
+		sqboot.bootGradient[n] = sqboot.gradientDestination[n]
+		sqboot.gFuncs[n] = sqboot.empty
+	end
+end
+
+function sqboot.empty(n)
+
 end
 
 function codex.update.sqreener() -- sqreener detects phone.
