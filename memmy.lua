@@ -146,4 +146,61 @@ function index.dir(d,route,cstr)
 	end
 end
 
+function memmy.tabtofile(table,dir)
+	local ostring = "local t = {}\n"
+	for k,v in next, table do
+		if type(k) == "string" then
+			ostring = ostring .. "t." .. k .. " = "
+		elseif type(k) == "number" then
+			ostring = ostring .. "t[" .. tostring(k) .. "] = "
+		end
+		if type(v) == "number" then
+			ostring = ostring .. tostring(v) .. "\n"
+		elseif type(v) == "string" then
+			ostring = ostring .. "\"" .. v .. "\"\n"
+		elseif type(v) == "table" then
+			ostring = ostring .. "{}\n"
+			local namestring = "t"
+			if type(k) == "string" then
+				namestring = namestring .. "[\"" .. k .. "\"]"
+			else
+				namestring = namestring .. "[" .. tostring(k) .. "]"
+			end
+			ostring = ostring .. memmy.ttfrecurse(v,namestring)
+		elseif type(v) == "function" then
+			ostring = ostring .. "nil\n"
+		end
+	end
+	ostring = ostring .. "return t"
+	fs.write(dir,ostring)
+end
+
+function memmy.ttfrecurse(table,name)
+	local ostring = ""
+	for k,v in next, table do
+		if type(k) == "string" then
+			ostring = ostring .. name .. "[\"" .. k .. "\"] = "
+		elseif type(k) == "number" then
+			ostring = ostring .. name .. "[" .. tostring(k) .. "] = "
+		end
+		if type(v) == "number" then
+			ostring = ostring .. tostring(v) .. "\n"
+		elseif type(v) == "string" then
+			ostring = ostring .. "\"" .. v .. "\"\n"
+		elseif type(v) == "table" then
+			ostring = ostring .. "{}\n"
+			local namestring = name .. "["
+			if type(k) == "string" then
+				local namestring = namestring .. "\"" .. k .. "\"]"
+			else
+				local namestring = namestring .. tostring(k) .. "]"
+			end
+			ostring = ostring .. memmy.ttfrecurse(v,namestring)
+		elseif type(v) == "function" then
+			ostring = ostring .. "nil\n"
+		end
+	end
+	return ostring
+end
+
 return memmy

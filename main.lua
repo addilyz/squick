@@ -4,7 +4,7 @@ require "slides"
 -- require "tools/chart"
 require "bubble"
 --nodes = require "game/rpg/nodes"
---require "memmy"
+require "memmy"
 --require "tools/stage"
 
 squick = {}
@@ -79,6 +79,7 @@ function sqboot.gradientCycle()
 	local bG = sqboot.bootGradient
 	fx.setBackgroundColor(bG[1],bG[2],bG[3],bG[4])
 	if sqboot.gPop == 4 then
+		memmy.tabtofile(sqboot,"test1.lua")
 		pages.expunge("squickBoot")
 		codex.delete("squickBoot")
 		print("squickBoot deleted!")
