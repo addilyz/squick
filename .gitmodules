@@ -1,3 +1,6 @@
 [submodule "codex"]
 	path = codex
 	url = https://github.com/addilyz/codex
+[submodule "splashes"]
+	path = splashes
+	url = https://github.com/love2d-community/splashes
