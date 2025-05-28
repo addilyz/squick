@@ -21,7 +21,7 @@ function codex.load.memmy()
 		memmy.ratioResize(fx.getWidth(),fx.getHeight())
 	end
 	index.page = codex.pages.getPage(500)
-	index.page.memmy = memmy.draw
+	--index.page.memmy = memmy.draw
 end
 
 function memmy.postboot(scr)
