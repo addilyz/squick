@@ -97,10 +97,11 @@ function sqboot.shredUp()
 end
 
 function sqboot.bounce()
-	print("bounce")if i succeed it will be worth
+	print("bounce")
 	if sqboot.ready and sqboot.aligned then
 		sqboot.shredUp()
-		sqboot.tick = sqboot.gradientEscape
+		codex.update.squickBoot = sqboot.gradientEscape
+		return
 	elseif sqboot.aligned == false then
 		sqboot.aligned = true
 	else
@@ -222,6 +223,7 @@ function codex.update.sqreener() -- sqreener detects phone.
 	if sqreener.frames < 2 then
 		if type(fs.getInfo("config/default")) == "table" then
 			local sqrtab = fs.load("config/default")()
+			sqboot.ready = true
 			squick.screen = sqrtab.screen
 			codex.delete("sqreener")
 		end

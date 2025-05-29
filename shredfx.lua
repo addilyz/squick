@@ -8,6 +8,7 @@ vs.height = 0
 vs.maxwidth = 1000
 vs.maxheight = 1000
 local scalar = 0
+local oScalar = 0
 local buffer = 1
 
 function shred.init(iw,ih,scale)
@@ -18,14 +19,16 @@ function shred.init(iw,ih,scale)
 end
 
 function shred.deriveScalar()
-	local sw = fx.getWdith()
+	local sw = fx.getWidth()
 	local sh = fx.getHeight()
 	local swov = sw/vs.width
 	local shov = sh/vs.height
 	if swov < shov or swov == shov then
 		scalar = swov
+		oScalar = vs.width/sw
 	else
 		scalar = shov
+		oScalar = vs.height/sh
 	end
 end
 
@@ -52,7 +55,7 @@ end
 function shred.closeTexGetImg()
 	fx.setCanvas()
 	local id = cv:newImageData()
-	buffer = fx.newImage()
+	buffer = fx.newImage(id)
 	cv = nil
 end
 
