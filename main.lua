@@ -95,14 +95,12 @@ function sqboot.shredUp()
 	print("shredUp")
 	shred.init(squick.internal.width,squick.internal.height)
 	shred.deriveScalar()
-	local shredbottom = pages.getPage(1)
-	local shredtop = pages.getPage(999)
-	local shredout = pages.getPage(1000)
-	local shredit = pages.getPage(1001)
-	shredbottom.shred = shred.openTex()
-	shredtop.shred = shred.closeTexGetImg()
-	shredout.shred = shred.ruin()
-	shredit.shred = shred.draw()
+	shred.setMode("ruin")
+	local shredone = pages.getPage(1)
+	local shredtwo = pages.getPage(999)
+	shred.drawPage = pages.getPage(1000)
+	shredone.shred = shred.stepOne
+	shredtwo.shred = shred.stepTwo
 end
 
 function sqboot.bounce()

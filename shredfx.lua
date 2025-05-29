@@ -1,5 +1,6 @@
 --- messy framebuffer effect meant primarily for poorly scaling entire projects.
 shred = {}
+shred.drawPage = {}
 local fx = love.graphics
 fx.setDefaultFilter("nearest","nearest") -- important
 local cv = {}
@@ -8,6 +9,7 @@ vs.width = 0
 vs.height = 0
 vs.maxwidth = 1000
 vs.maxheight = 1000
+local ws = {}
 local scalar = 0
 local oScalar = 0
 local buffer = 1
@@ -20,11 +22,16 @@ function shred.init(iw,ih,scale)
 	shred.stepOne = shred.empty
 	shred.stepTwo = shred.empty
 	shred.stepThree = shred.empty
+	codex.update.shred = shred.update
 end
 
 function shred.setMode(a)
 	if a == "ruin" then
-
+		cv[1] = fx.newCanvas(ws.width,ws.height)
+		cv[2] = fx.newCanvas(vs.width,vs.height)
+		shred.stepOne = shred.openSquish
+		shred.stepTwo = shred.closeSquish
+		shred.stepThree = shred.hasBuffer
 	else
 
 	end
@@ -39,28 +46,56 @@ function shred.empty()
 end
 
 function shred.deriveScalar()
-	local sw = fx.getWidth()
-	local sh = fx.getHeight()
-	local swov = sw/vs.width
-	local shov = sh/vs.height
+	ws = {}
+	ws.width = fx.getWidth()
+	ws.height = fx.getHeight()
+	local swov = ws.width/vs.width
+	local shov = ws.height/vs.height
 	if swov < shov or swov == shov then
 		scalar = swov
-		oScalar = vs.width/sw
+		oScalar = vs.width/ws.width
 	else
 		scalar = shov
-		oScalar = vs.height/sh
+		oScalar = vs.height/ws.height
 	end
 end
 
 function shred.openTex()
-	cv = fx.newCanvas(vs.width,vs.height)
-	fx.setCanvas(cv)
+	fx.setCanvas(cv[1])
+	fx.clear()
+end
+
+function shred.openSquish()
+	fx.setCanvas(cv[1])
+	fx.clear()
+end
+
+function shred.closeSquish()
+	fx.setCanvas()
+	local id = cv[1]:newImageData()
+	local img = fx.newImage(id)
+	id = nil
+	fx.setCanvas(cv[2])
+	fx.clear()
+	fx.push()
+	fx.scale(oScalar)
+	fx.draw(img,0,0)
+	fx.pop()
+	fx.setCanvas()
+	local id = cv[2]:newImageData()
+	buffer = nil
+	buffer = fx.newImage(id)
+	id = nil
+end
+
+function shred.close()
+
 end
 
 function shred.update()
 	if type(buffer) ~= "number" then
 		shred.update = nil
-		shred.drawFunc = shred.hasBuffer
+		shred.drawPage.shred = shred.hasBuffer
 	end
 end
 
