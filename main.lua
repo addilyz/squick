@@ -255,6 +255,7 @@ function sqreener.sqreen()
 	end
 	sqreener.frConfig()
 	codex.delete("sqreener")
+	sqboot.ready = true
 end
 
 function sqreener.frConfig()
