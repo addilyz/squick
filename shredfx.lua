@@ -1,6 +1,7 @@
 --- messy framebuffer effect meant primarily for poorly scaling entire projects.
 shred = {}
 local fx = love.graphics
+fx.setDefaultFilter("nearest","nearest") -- important
 local cv = {}
 local vs = {}
 vs.width = 0
@@ -16,6 +17,25 @@ function shred.init(iw,ih,scale)
 	vs.width = iw
 	vs.height = ih
 	scalar = scale
+	shred.stepOne = shred.empty
+	shred.stepTwo = shred.empty
+	shred.stepThree = shred.empty
+end
+
+function shred.setMode(a)
+	if a == "ruin" then
+
+	else
+
+	end
+end
+
+function shred.getDraws()
+	return shred.stepOne, shred.stepTwo, shred.stepThree
+end
+
+function shred.empty()
+	
 end
 
 function shred.deriveScalar()

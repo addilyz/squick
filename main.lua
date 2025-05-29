@@ -28,6 +28,7 @@ test = {
 }
 local fs = love.filesystem
 local fx = love.graphics
+fx.setDefaultFilter("nearest","nearest")
 local pages = codex.pages
 local sqreener = {}
 sqreener.frames = 0
@@ -42,7 +43,8 @@ sqboot.aligned = true
 sqboot.gPop = 0
 
 function squick.start()
-
+	codex.delete("WithLOVE")
+	pages.expunge("WithLOVE")
 end
 
 function squick.load()
@@ -64,8 +66,13 @@ end
 
 function squick.bootWithLOVE()
 	print("bootWithLOVE")
-	splash = o_ten_one()
+	splash = o_ten_one({background={0,0,0,0}})
 	splash.onDone = squick.start()
+	local page = pages.getPage(200)
+	codex.update.WithLOVE = squick.updateWithLOVE
+	codex.keypressed.WithLOVE = squick.skippedWithLOVE
+	codex.mousepressed.WithLOVE = squick.skippedWithLOVE
+	page.WithLOVE = squick.drawnWithLOVE
 end
 
 function squick.updateWithLOVE(dt)
@@ -91,9 +98,11 @@ function sqboot.shredUp()
 	local shredbottom = pages.getPage(1)
 	local shredtop = pages.getPage(999)
 	local shredout = pages.getPage(1000)
+	local shredit = pages.getPage(1001)
 	shredbottom.shred = shred.openTex()
 	shredtop.shred = shred.closeTexGetImg()
-	shredout.shred = shred.draw
+	shredout.shred = shred.ruin()
+	shredit.shred = shred.draw()
 end
 
 function sqboot.bounce()
@@ -174,6 +183,7 @@ function sqboot.gradientEscape()
 		codex.delete("squickBoot")
 		print("squickBoot deleted!")
 		sqboot = nil
+		squick.bootWithLOVE()
 	else
 		sqboot.gPop = 0
 	end

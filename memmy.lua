@@ -202,5 +202,3 @@ function memmy.ttfrecurse(table,name)
 	end
 	return ostring
 end
-
-return memmy
