@@ -63,6 +63,7 @@ function squick.drawBoot()
 end
 
 function squick.bootWithLOVE()
+	print("bootWithLOVE")
 	splash = o_ten_one()
 	splash.onDone = squick.start()
 end
@@ -84,6 +85,7 @@ function codex.update.squickBoot()
 end
 
 function sqboot.shredUp()
+	print("shredUp")
 	shred.init(squick.internal.width,squick.internal.height)
 	shred.deriveScalar()
 	local shredbottom = pages.getPage(1)
@@ -95,6 +97,7 @@ function sqboot.shredUp()
 end
 
 function sqboot.bounce()
+	print("bounce")if i succeed it will be worth
 	if sqboot.ready and sqboot.aligned then
 		sqboot.shredUp()
 		sqboot.tick = sqboot.gradientEscape
@@ -134,14 +137,17 @@ function sqboot.bounce()
 end
 
 function sqboot.tick()
+	print("tick")
 	sqboot.gradientCycle()
 end
 
 function sqboot.gradientStep()
+	print("gradientStep")
 	sqboot.setGradient()
 end
 
 function sqboot.setGradient()
+	print("setGradient")
 	for n = 1, 4, 1 do
 		if sqboot.gradientDirection[n] < 0 then
 			sqboot.gFuncs[n] = sqboot.gradientDown
@@ -155,6 +161,7 @@ function sqboot.setGradient()
 end
 
 function sqboot.gradientEscape()
+	print("gradientEscape")
 	for n = 1, 4, 1 do
 		sqboot.gFuncs[n](n)
 	end
@@ -172,6 +179,7 @@ function sqboot.gradientEscape()
 end
 
 function sqboot.gradientCycle()
+	print("gradientCycle")
 	for n = 1, 4, 1 do
 		sqboot.gFuncs[n](n)
 	end
@@ -185,6 +193,7 @@ function sqboot.gradientCycle()
 end
 
 function sqboot.gradientUp(n)
+	print("gradientUp["..tostring(n).."]")
 	if sqboot.bootGradient[n] < sqboot.gradientDestination[n] then
 		sqboot.bootGradient[n] = sqboot.bootGradient[n] + sqboot.gradientDirection[n]
 	else
@@ -194,6 +203,7 @@ function sqboot.gradientUp(n)
 end
 
 function sqboot.gradientDown(n)
+	print("gradientDown["..tostring(n).."]")
 	if sqboot.bootGradient[n] > sqboot.gradientDestination[n] then
 		sqboot.bootGradient[n] = sqboot.bootGradient[n] + sqboot.gradientDirection[n]
 	else
@@ -203,6 +213,7 @@ function sqboot.gradientDown(n)
 end
 
 function sqboot.empty(n)
+	print("empty["..tostring(n).."]")
 	sqboot.gPop = sqboot.gPop + 1
 end
 
