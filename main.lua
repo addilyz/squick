@@ -17,6 +17,9 @@ squick.screen.height = 16
 squick.internal = {}
 squick.internal.width = 240
 squick.internal.height = 180
+squick.mwl = {}
+squick.mwl.width = 600
+squick.mwl.height = 450
 test = {
 	defaultSel = 2,
 	title = "Quit Editor",
@@ -93,7 +96,7 @@ end
 
 function sqboot.shredUp()
 	print("shredUp")
-	shred.init(squick.internal.width,squick.internal.height)
+	shred.init(squick.mwl.width,squick.mwl.height)
 	shred.deriveScalar()
 	shred.setMode("ruin")
 	local shredone = pages.getPage(1)
