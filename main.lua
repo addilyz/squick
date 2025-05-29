@@ -7,7 +7,7 @@ require "bubble"
 require "memmy"
 --require "tools/stage"
 require "shredfx"
-o_ten_one = require "splashes/o-ten-one"
+o_ten_one = require "splashes/o-ten-one" -- love-community/splashes
 
 squick = {}
 squick.screen = {}
@@ -41,13 +41,22 @@ sqboot.gradientDestination = {0,0,0,1}
 sqboot.gradientDirection = {-.01,-.01,-.01,0}
 sqboot.bootGradient = {1,1,1,1}
 sqboot.gFuncs = {}
-sqboot.ready = false
+sqboot.ready = {false,false,false}
 sqboot.aligned = true
 sqboot.gPop = 0
 
 function squick.start()
 	codex.delete("WithLOVE")
 	pages.expunge("WithLOVE")
+	codex.delete("shred")
+	pages.expunge("shred")
+	shred.init("stretch")
+	shredone = codex.pages.getPage(1)
+	shredtwo = codex.pages.getPage(101)
+	shredthree = codex.pages.getPage(102)
+	shredone.shred = shred.stepOne
+	shredtwo.shred = shred.stepTwo
+	shredthree.shred = shred.stepThree
 end
 
 function squick.load()
@@ -67,9 +76,9 @@ function squick.drawBoot()
 	fx.print(fs.getSaveDirectory())
 end
 
-function squick.bootWithLOVE()
+function squick.bootWithLOVE() --- love-community/splashes
 	print("bootWithLOVE")
-	splash = o_ten_one({background={0,0,0,0}})
+	splash = o_ten_one({background={0,0,0,1}})
 	splash.onDone = squick.start()
 	local page = pages.getPage(200)
 	codex.update.WithLOVE = squick.updateWithLOVE
@@ -78,16 +87,27 @@ function squick.bootWithLOVE()
 	page.WithLOVE = squick.drawnWithLOVE
 end
 
-function squick.updateWithLOVE(dt)
+function squick.updateWithLOVE(dt) --- love-community/splashes
 	splash:update(dt)
 end
 
-function squick.skippedWithLOVE()
+function squick.skippedWithLOVE() --- love-community/splashes
 	splash:skip()
 end
 
-function squick.drawnWithLOVE()
+function squick.drawnWithLOVE() --- love-community/splashes
 	splash:draw()
+end
+
+function sqboot.cacheWithLOVE() --- love-community/splashes
+	print("bootWithLOVE")
+	splash = o_ten_one({background={0,0,0,1}})
+	splash.onDone = sqboot.finalizeMemmyCache
+	
+end
+
+function sqboot.finalizeMemmyCache()
+
 end
 
 function codex.update.squickBoot()
@@ -108,7 +128,7 @@ end
 
 function sqboot.bounce()
 	print("bounce")
-	if sqboot.ready and sqboot.aligned then
+	if sqboot.ready[1] and sqboot.ready[2] and sqboot.ready[3] and sqboot.aligned then
 		sqboot.shredUp()
 		codex.update.squickBoot = sqboot.gradientEscape
 		return
@@ -234,7 +254,7 @@ function codex.update.sqreener() -- sqreener detects phone.
 	if sqreener.frames < 2 then
 		if type(fs.getInfo("config/default")) == "table" then
 			local sqrtab = fs.load("config/default")()
-			sqboot.ready = true
+			sqboot.ready[1] = true
 			squick.screen = sqrtab.screen
 			codex.delete("sqreener")
 		end
@@ -251,14 +271,16 @@ function sqreener.sqreen()
 	if h > w and w > 10 then
 		squick.screen = {w,h}
 		squick.screen.mode = "portrait"
+		sqboot.cacheWithLOVE()
 	else
 		squick.screen = {w,h}
 		squick.screen.mode = "desktop"
+		sqboot.ready[2] = true
 		love.window.setMode(800,600)
 	end
 	sqreener.frConfig()
 	codex.delete("sqreener")
-	sqboot.ready = true
+	sqboot.ready[1] = true
 end
 
 function sqreener.frConfig()

@@ -82,9 +82,9 @@ function shred.closeSquish()
 	fx.draw(img,0,0)
 	fx.pop()
 	fx.setCanvas()
+	img = nil
 	local id = cv[2]:newImageData()
-	buffer = nil
-	buffer = fx.newImage(id)
+	buffer = cv[2]
 	id = nil
 end
 
