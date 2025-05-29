@@ -106,6 +106,7 @@ function shred.close()
 end
 
 function shred.update()
+	print("SHRED UPDATE")
 	if type(buffer) ~= "number" and type(buffer) ~= nil then
 		shred.update = nil
 		shred.drawPage.shred = shred.hasBuffer

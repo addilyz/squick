@@ -41,7 +41,7 @@ sqboot.gradientDestination = {0,0,0,1}
 sqboot.gradientDirection = {-.01,-.01,-.01,0}
 sqboot.bootGradient = {1,1,1,1}
 sqboot.gFuncs = {}
-sqboot.ready = {false,false,false}
+sqboot.ready = {false,false,true}
 sqboot.aligned = true
 sqboot.gPop = 0
 
@@ -50,7 +50,7 @@ function squick.start()
 	pages.expunge("WithLOVE")
 	codex.delete("shred")
 	pages.expunge("shred")
-	shred.init("stretch")
+	shred.init("notRuin")
 	shredone = codex.pages.getPage(1)
 	shredtwo = codex.pages.getPage(101)
 	shredthree = codex.pages.getPage(102)
@@ -275,6 +275,7 @@ function codex.update.sqreener() -- sqreener detects phone.
 		if type(fs.getInfo("config/default")) == "table" then
 			local sqrtab = fs.load("config/default")()
 			sqboot.ready[1] = true
+			sqboot.ready[2] = true
 			squick.screen = sqrtab.screen
 			codex.delete("sqreener")
 		end
@@ -291,7 +292,7 @@ function sqreener.sqreen()
 	if h > w and w > 10 then
 		squick.screen = {w,h}
 		squick.screen.mode = "portrait"
-		--sqboot.cacheWithLOVE()
+		--sqboot.cachedWithLOVE()
 	else
 		squick.screen = {w,h}
 		squick.screen.mode = "desktop"
