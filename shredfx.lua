@@ -1,6 +1,8 @@
 --- messy framebuffer effect meant primarily for poorly scaling entire projects.
 shred = {}
 shred.drawPage = {}
+shred.mode = "none"
+shred.textwoavailable = false
 local fx = love.graphics
 fx.setDefaultFilter("nearest","nearest") -- important
 local cv = {}
@@ -27,13 +29,17 @@ end
 
 function shred.setMode(a)
 	if a == "ruin" then
+		shred.mode = "ruin"
 		cv[1] = fx.newCanvas(ws.width,ws.height)
 		cv[2] = fx.newCanvas(vs.width,vs.height)
+		shred.textwoavailable = false
 		shred.stepOne = shred.openSquish
 		shred.stepTwo = shred.closeSquish
 		shred.stepThree = shred.hasBuffer
 	else
-
+		shred.mode = "shred"
+		cv[1] = fx.newCanvas(vs.width,vs.height)
+		cv[2] = nil
 	end
 end
 
@@ -68,6 +74,7 @@ end
 function shred.openSquish()
 	fx.setCanvas(cv[1])
 	fx.clear()
+	fx.push()
 end
 
 function shred.closeSquish()
@@ -83,13 +90,19 @@ function shred.closeSquish()
 	fx.pop()
 	fx.setCanvas()
 	img = nil
+	buffer = nil
 	local id = cv[2]:newImageData()
-	buffer = cv[2]
+	buffer = fx.newImage(id)
 	id = nil
 end
 
 function shred.close()
-
+	fx.pop()
+	fx.setCanvas()
+	fx.push()
+	fx.scale(scalar)
+	fx.draw(cv[1],0,0)
+	fx.pop()
 end
 
 function shred.update()

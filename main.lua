@@ -1,12 +1,12 @@
 
 require "codex/codex"
+require "memmy"
+require "shredfx"
 require "slides"
 -- require "tools/chart"
 require "bubble"
 --nodes = require "game/rpg/nodes"
-require "memmy"
 --require "tools/stage"
-require "shredfx"
 o_ten_one = require "splashes/o-ten-one" -- love-community/splashes
 
 squick = {}
@@ -59,9 +59,15 @@ function squick.start()
 	shredthree.shred = shred.stepThree
 end
 
-function squick.load()
+function squick.load(args)
 	--nodes.loadMap({surface={{224,246}}})
 	--nodes.codex()
+	for a = 1, #args, 1 do
+		if args[a] == "--refresh-mwl-cache" then 	
+			memmy.loadCache() 
+			slides.openBonusCache(".SPLASHES-MOBILE","love-community/splashes")
+		end
+	end
 	local bG = sqboot.bootGradient
 	fx.setBackgroundColor(bG[1],bG[2],bG[3],bG[4])
 	local page = pages.getPage(500)
@@ -101,10 +107,24 @@ end
 
 function sqboot.cacheWithLOVE() --- love-community/splashes
 	print("bootWithLOVE")
+	mwlCachePreShredUp()
 	splash = o_ten_one({background={0,0,0,1}})
 	splash.onDone = sqboot.finalizeMemmyCache
-	
+
 end
+
+function mwlCachePreShredUp()
+	print("Cache shredUp")
+	shred.init(squick.mwl.width,squick.mwl.height)
+	shred.deriveScalar()
+	shred.setMode("ruin")
+	local shredone = pages.getPage(1)
+	local shredtwo = pages.getPage(999)
+	shred.drawPage = pages.getPage(1000)
+	shredone.shred = shred.stepOne
+	shredtwo.shred = shred.stepTwo
+end
+
 
 function sqboot.finalizeMemmyCache()
 
@@ -271,7 +291,7 @@ function sqreener.sqreen()
 	if h > w and w > 10 then
 		squick.screen = {w,h}
 		squick.screen.mode = "portrait"
-		sqboot.cacheWithLOVE()
+		--sqboot.cacheWithLOVE()
 	else
 		squick.screen = {w,h}
 		squick.screen.mode = "desktop"

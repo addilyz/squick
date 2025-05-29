@@ -10,18 +10,20 @@ local store = {}
 store.slides = {}
 store.anims = {}
 store.insts = {}
+local fs = love.filesystem
+local fx = love.graphics
 
 function slides.import(key,fp)
 	store.slides[key] = setmetatable({},slide)
 	local t = store.slides[key]
 	t.key = key
-	t.temp = love.filesystem.load(fp)()
-	t.image = love.graphics.newImage(t.temp.ipath)
+	t.temp = fs.load(fp)()
+	t.image = fx.newImage(t.temp.ipath)
 	local sw = t.image:getWidth()
 	local sh = t.image:getHeight()
 	t.quads = {}
 	for n = 1, #t.temp.coords, 1 do
-		t.quads[n] = love.graphics.newQuad(
+		t.quads[n] = fx.newQuad(
 			t.temp.coords[n][1],
 			t.temp.coords[n][2],
 			t.temp.coords[n][3],
@@ -63,8 +65,8 @@ function slides.import(key,fp)
 end
 
 function slide:present(quad,x,y)
-	love.graphics.setColor(1,1,1,1)
-	love.graphics.draw(self.image,self.quads[quad],x,y)
+	fx.setColor(1,1,1,1)
+	fx.draw(self.image,self.quads[quad],x,y)
 end
 
 function anim:getInstance(fpso)
@@ -104,4 +106,11 @@ end
 
 function instance:draw(x,y)
 	self.anim.slide:present(self.pos,x,y)
+end
+
+function slides.openBonusCache(loc,ident)
+	if memmy then
+		fs.createDirectory("cache/slides/"..loc)
+		memmy.addCacheItem("slides",loc,ident)
+	end
 end

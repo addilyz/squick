@@ -11,6 +11,8 @@ local catalog = {}
 local root = {}
 local window = {0,0,0,0}
 local cache = {}
+local cachebuffer = {}
+local cachert = {}
 
 function codex.load.memmy()
 	index.structure()
@@ -27,6 +29,44 @@ function memmy.initDirectory(loc)
 	end
 	index.page = codex.pages.getPage(1028)
 	index.page.memmy = memmy.draw
+end
+
+function memmy.loadCache()
+	local cf = fs.load("db/cache")
+	if cf == nil then
+		fs.createDirectory("cache")
+		fs.createDirectory("db")
+		fs.write("db/cache","return {}")
+		cf = fs.load("db/cache")
+	end
+	cache = cf()
+end
+
+function memmy.addCacheItem(lib,dir,ident)
+	local ds = "cache" .. dir
+	ds = string.gsub(ds,"/","_")
+	cachert[ds] = {}
+	cachert[ds].ident = ident
+	cachert[ds].lib = lib
+end
+
+function memmy.promoteToCacheBuffer(dir)
+	local ds = "cache" .. dir
+	ds = string.gsub(ds,"/","_")
+	cachebuffer[ds] = {}
+	cachebuffer[ds].ident = cachert[ds].ident
+	cachebuffer[ds].lib = cachert[ds].lib
+	cachert[ds] = nil
+end
+
+function memmy.finalizeCacheBuffer()
+	for k,v in next, cachebuffer do
+		cache[k] = {}
+		cache[k].ident = v.ident
+		cache[k].lib = v.lib
+		v = nil
+	end
+	memmy.saveCache()
 end
 
 function memmy.postboot(scr)
