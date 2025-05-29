@@ -10,18 +10,23 @@ struct.tags = {{"code blob",".lua"},{"dir","/"},{"plaintext",".txt"}}
 local catalog = {}
 local root = {}
 local window = {0,0,0,0}
+local cache = {}
 
 function codex.load.memmy()
 	index.structure()
-	index.loc = "root"
+end
+
+function memmy.initDirectory(loc)
+	local loc = loc or "root"
+	index.loc = loc
 	index.cat = catalog[index.loc]
 	index.cur = 1
 	index.pre = {}
 	if struct.window[1] < 1 then
 		memmy.ratioResize(fx.getWidth(),fx.getHeight())
 	end
-	index.page = codex.pages.getPage(500)
-	--index.page.memmy = memmy.draw
+	index.page = codex.pages.getPage(1028)
+	index.page.memmy = memmy.draw
 end
 
 function memmy.postboot(scr)
