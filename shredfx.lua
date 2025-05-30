@@ -17,6 +17,7 @@ local oScalar = 0
 local buffer = 1
 
 function shred.init(iw,ih,scale)
+	print("shred init")
 	scale = scale or 0
 	vs.width = iw
 	vs.height = ih
@@ -28,10 +29,11 @@ function shred.init(iw,ih,scale)
 end
 
 function shred.setMode(a)
+	print("shred setMode: " .. a)
 	if a == "ruin" then
 		shred.mode = "ruin"
-		cv[1] = fx.newCanvas(ws.width,ws.height)
-		cv[2] = fx.newCanvas(vs.width,vs.height)
+		cv[1] = fx.newCanvas(vs.width,vs.height)
+		cv[2] = fx.newCanvas(ws.width,ws.height)
 		shred.textwoavailable = false
 		shred.stepOne = shred.openSquish
 		shred.stepTwo = shred.closeSquish
@@ -96,7 +98,7 @@ function shred.closeSquish()
 	id = nil
 end
 
-function shred.close()
+function shred.singleClose()
 	fx.pop()
 	fx.setCanvas()
 	fx.push()
@@ -108,8 +110,8 @@ end
 function shred.update()
 	print("SHRED UPDATE")
 	if type(buffer) ~= "number" and type(buffer) ~= nil then
-		shred.update = nil
-		shred.drawPage.shred = shred.hasBuffer
+		codex.update.shred = nil
+		shred.drawPage.shred = shred.stepThree
 	end
 end
 

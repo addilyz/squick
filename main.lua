@@ -18,8 +18,8 @@ squick.internal = {}
 squick.internal.width = 240
 squick.internal.height = 180
 squick.mwl = {}
-squick.mwl.width = 600
-squick.mwl.height = 450
+squick.mwl.width = 200
+squick.mwl.height = 150
 test = {
 	defaultSel = 2,
 	title = "Quit Editor",
@@ -144,6 +144,7 @@ function sqboot.shredUp()
 	shred.drawPage = pages.getPage(1000)
 	shredone.shred = shred.stepOne
 	shredtwo.shred = shred.stepTwo
+	codex.update.shred = shred.update()
 end
 
 function sqboot.bounce()
