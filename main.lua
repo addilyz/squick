@@ -34,13 +34,14 @@ local fs = love.filesystem
 local fx = love.graphics
 fx.setDefaultFilter("nearest","nearest")
 local pages = codex.pages
-local sqreener = {}
+local sqreener = {} -- device profiler
 sqreener.frames = 0
-local sqboot = {}
+local sqboot = {} -- bootloader splash
 sqboot.gradientStart = {1,1,1,1}
 sqboot.gradientDestination = {0,0,0,1}
 sqboot.gradientDirection = {-.01,-.01,-.01,0}
 sqboot.bootGradient = {1,1,1,1}
+sqboot.gSpeed = 60
 sqboot.gFuncs = {}
 sqboot.ready = {false,false,true}
 sqboot.aligned = true
@@ -81,7 +82,7 @@ function squick.bootWithLOVE() --- love-community/splashes
 	print("bootWithLOVE")
 	splash = o_ten_one({background={0,0,0,1}})
 	splash.onDone = squick.start()
-	local page = pages.getPage(200)
+	local page = pages.getPage(5)
 	codex.update.WithLOVE = squick.updateWithLOVE
 	codex.keypressed.WithLOVE = squick.skippedWithLOVE
 	codex.mousepressed.WithLOVE = squick.skippedWithLOVE
@@ -104,8 +105,7 @@ function sqboot.cacheWithLOVE() --- love-community/splashes
 	print("bootWithLOVE")
 	mwlCachePreShredUp()
 	splash = o_ten_one({background={0,0,0,1}})
-	splash.onDone = sqboot.finalizeMemmyCache
-
+	splash.onDone = squick.start
 end
 
 function mwlCachePreShredUp()
@@ -114,10 +114,7 @@ function mwlCachePreShredUp()
 	shred.deriveScalar()
 	shred.setMode("ruin")
 	local shredone = pages.getPage(1)
-	local shredtwo = pages.getPage(999)
-	shred.drawPage = pages.getPage(1000)
-	shredone.shred = shred.stepOne
-	shredtwo.shred = shred.stepTwo
+	local shredtwo = pages.getPage(1000)
 end
 
 
