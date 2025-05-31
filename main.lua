@@ -5,6 +5,7 @@ require "shredfx"
 require "slides"
 -- require "tools/chart"
 require "bubble"
+require "confman"
 --nodes = require "game/rpg/nodes"
 --require "tools/stage"
 o_ten_one = require "splashes/o-ten-one" -- love-community/splashes
@@ -51,12 +52,6 @@ function squick.start()
 	codex.delete("shred")
 	pages.expunge("shred")
 	shred.init("notRuin")
-	shredone = codex.pages.getPage(1)
-	shredtwo = codex.pages.getPage(101)
-	shredthree = codex.pages.getPage(102)
-	shredone.shred = shred.stepOne
-	shredtwo.shred = shred.stepTwo
-	shredthree.shred = shred.stepThree
 end
 
 function squick.load(args)
@@ -139,12 +134,6 @@ function sqboot.shredUp()
 	shred.init(squick.mwl.width,squick.mwl.height)
 	shred.deriveScalar()
 	shred.setMode("ruin")
-	local shredone = pages.getPage(1)
-	local shredtwo = pages.getPage(999)
-	shred.drawPage = pages.getPage(1000)
-	shredone.shred = shred.stepOne
-	shredtwo.shred = shred.stepTwo
-	codex.update.shred = shred.update()
 end
 
 function sqboot.bounce()

@@ -14,7 +14,6 @@ vs.maxheight = 1000
 local ws = {}
 local scalar = 0
 local oScalar = 0
-local buffer = 1
 
 function shred.init(iw,ih,scale)
 	print("shred init")
@@ -22,22 +21,19 @@ function shred.init(iw,ih,scale)
 	vs.width = iw
 	vs.height = ih
 	scalar = scale
-	shred.stepOne = shred.empty
-	shred.stepTwo = shred.empty
-	shred.stepThree = shred.empty
-	codex.update.shred = shred.update
 end
 
 function shred.setMode(a)
 	print("shred setMode: " .. a)
 	if a == "ruin" then
 		shred.mode = "ruin"
-		cv[1] = fx.newCanvas(vs.width,vs.height)
-		cv[2] = fx.newCanvas(ws.width,ws.height)
+		cv[1] = fx.newCanvas(ws.width,ws.height)
+		cv[2] = fx.newCanvas(vs.width,vs.height)
 		shred.textwoavailable = false
-		shred.stepOne = shred.openSquish
-		shred.stepTwo = shred.closeSquish
-		shred.stepThree = shred.hasBuffer
+		local one = codex.pages.getPage(1)
+		local two = codex.pages.getPage(100)
+		one.shred = shred.openSquish
+		two.shred = shred.closeSquish
 	else
 		shred.mode = "shred"
 		cv[1] = fx.newCanvas(vs.width,vs.height)
@@ -45,15 +41,12 @@ function shred.setMode(a)
 	end
 end
 
-function shred.getDraws()
-	return shred.stepOne, shred.stepTwo, shred.stepThree
-end
-
 function shred.empty()
 	
 end
 
 function shred.deriveScalar()
+	print("derive")
 	ws = {}
 	ws.width = fx.getWidth()
 	ws.height = fx.getHeight()
@@ -74,28 +67,29 @@ function shred.openTex()
 end
 
 function shred.openSquish()
+	print("squish1")
 	fx.setCanvas(cv[1])
 	fx.clear()
 	fx.push()
 end
 
 function shred.closeSquish()
+	print("squish2")
+	fx.pop()
 	fx.setCanvas()
-	local id = cv[1]:newImageData()
-	local img = fx.newImage(id)
-	id = nil
+	fx.setBlendMode("alpha","premultiplied")
 	fx.setCanvas(cv[2])
 	fx.clear()
 	fx.push()
 	fx.scale(oScalar)
-	fx.draw(img,0,0)
+	fx.draw(cv[1],0,0)
 	fx.pop()
 	fx.setCanvas()
-	img = nil
-	buffer = nil
-	local id = cv[2]:newImageData()
-	buffer = fx.newImage(id)
-	id = nil
+	fx.push()
+	fx.scale(scalar)
+	fx.draw(cv[2],0,0)
+	fx.pop()
+	fx.setBlendMode("alpha")
 end
 
 function shred.singleClose()
@@ -104,35 +98,5 @@ function shred.singleClose()
 	fx.push()
 	fx.scale(scalar)
 	fx.draw(cv[1],0,0)
-	fx.pop()
-end
-
-function shred.update()
-	print("SHRED UPDATE")
-	if type(buffer) ~= "number" and type(buffer) ~= nil then
-		codex.update.shred = nil
-		shred.drawPage.shred = shred.stepThree
-	end
-end
-
-function shred.draw()
-	shred.drawFunc()
-end
-
-function shred.drawFunc()
-
-end
-
-function shred.closeTexGetImg()
-	fx.setCanvas()
-	local id = cv:newImageData()
-	buffer = fx.newImage(id)
-	cv = nil
-end
-
-function shred.hasBuffer()
-	fx.push()
-	fx.scale(scalar)
-	fx.draw(buffer,0,0)
 	fx.pop()
 end
