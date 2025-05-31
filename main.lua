@@ -19,8 +19,8 @@ squick.internal = {}
 squick.internal.width = 240
 squick.internal.height = 180
 squick.mwl = {}
-squick.mwl.width = 200
-squick.mwl.height = 150
+squick.mwl.width = 600
+squick.mwl.height = 450
 test = {
 	defaultSel = 2,
 	title = "Quit Editor",
@@ -41,18 +41,20 @@ sqboot.gradientStart = {1,1,1,1}
 sqboot.gradientDestination = {0,0,0,1}
 sqboot.gradientDirection = {-.01,-.01,-.01,0}
 sqboot.bootGradient = {1,1,1,1}
-sqboot.gSpeed = 60
+sqboot.gSpeed = 1/60
+sqboot.gProg = 0
 sqboot.gFuncs = {}
 sqboot.ready = {false,false,true}
 sqboot.aligned = true
 sqboot.gPop = 0
 
 function squick.start()
+	print("start")
 	codex.delete("WithLOVE")
 	pages.expunge("WithLOVE")
 	codex.delete("shred")
 	pages.expunge("shred")
-	shred.init("notRuin")
+	shred.init(squick.internal.width,squick.internal.height,"notRuin")
 end
 
 function squick.load(args)
@@ -81,7 +83,7 @@ end
 function squick.bootWithLOVE() --- love-community/splashes
 	print("bootWithLOVE")
 	splash = o_ten_one({background={0,0,0,1}})
-	splash.onDone = squick.start()
+	splash.onDone = squick.start
 	local page = pages.getPage(5)
 	codex.update.WithLOVE = squick.updateWithLOVE
 	codex.keypressed.WithLOVE = squick.skippedWithLOVE
@@ -122,8 +124,8 @@ function sqboot.finalizeMemmyCache()
 
 end
 
-function codex.update.squickBoot()
-	sqboot.gradientStep()
+function codex.update.squickBoot(dt)
+	sqboot.gradientStep(dt)
 end
 
 function sqboot.shredUp()
@@ -174,17 +176,17 @@ function sqboot.bounce()
 	sqboot.setGradient()
 end
 
-function sqboot.tick()
+function sqboot.tick(dt)
 	print("tick")
-	sqboot.gradientCycle()
+	sqboot.gradientCycle(dt)
 end
 
-function sqboot.gradientStep()
+function sqboot.gradientStep(dt)
 	print("gradientStep")
-	sqboot.setGradient()
+	sqboot.setGradient(dt)
 end
 
-function sqboot.setGradient()
+function sqboot.setGradient(dt)
 	print("setGradient")
 	for n = 1, 4, 1 do
 		if sqboot.gradientDirection[n] < 0 then
@@ -217,7 +219,7 @@ function sqboot.gradientEscape()
 	end
 end
 
-function sqboot.gradientCycle()
+function sqboot.gradientCycle(dt)
 	print("gradientCycle")
 	for n = 1, 4, 1 do
 		sqboot.gFuncs[n](n)

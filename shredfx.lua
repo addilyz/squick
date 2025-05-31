@@ -17,6 +17,8 @@ local oScalar = 0
 
 function shred.init(iw,ih,scale)
 	print("shred init")
+	print("iw: "..iw)
+	print("ih: "..ih)
 	scale = scale or 0
 	vs.width = iw
 	vs.height = ih
