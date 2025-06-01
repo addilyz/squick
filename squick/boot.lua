@@ -209,7 +209,9 @@ function sqboot.gradientEscape()
 	local bG = sqboot.bootGradient
 	fx.setBackgroundColor(bG[1],bG[2],bG[3],bG[4])
 	if sqboot.gPop == 4 then
-		memmy.tabtofile(sqboot,"test1.lua")
+		fs.createDirectory("logs")
+		local lstring = os.date('%Y%m%d-%H%M-%S')
+		memmy.tabtofile(sqboot,"logs/sqboot" .. lstring)
 		pages.expunge("squickBoot")
 		codex.delete("squickBoot")
 		print("squickBoot deleted!")

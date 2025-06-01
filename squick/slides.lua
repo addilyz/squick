@@ -115,6 +115,7 @@ function slides.openCache(loc,ident)
 		memmy.addCacheItem("slides",loc,ident)
 		cache.dir = "cache/slides/"..loc.."/"
 		cache.fn = ident
+		cache.loc = loc
 		cache.num = 1
 		cache.data = {}
 	end
@@ -127,6 +128,7 @@ function slides.cache(image)
 end
 
 function slides.closeCache()
-	
+	memmy.promoteToCacheBuffer(cache.loc)
+	memmy.finalizeCacheBuffer()
 end
 
