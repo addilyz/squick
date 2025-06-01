@@ -1,11 +1,11 @@
 
 require "codex/codex"
-require "memmy"
-require "shredfx"
-require "slides"
+require "squick/memmy"
+require "squick/shredfx"
+require "squick/slides"
 -- require "tools/chart"
-require "bubble"
-require "confman"
+require "squick/bubble"
+require "squick/confman"
 --nodes = require "game/rpg/nodes"
 --require "tools/stage"
 o_ten_one = require "splashes/o-ten-one" -- love-community/splashes
