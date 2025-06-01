@@ -120,7 +120,8 @@ function squick.drawnWithLOVE() --- love-community/splashes
 end
 
 function sqboot.cacheWithLOVE() --- love-community/splashes
-	print("cacheWithLOVE")
+	print("bootWithLOVE")
+	mwlCacheRefresh()
 	splash = o_ten_one({background={0,0,0,1}})
 	splash.onDone = mwlCacheClose
 	local page = pages.getPage(5)
@@ -270,6 +271,19 @@ end
 
 function sqboot.gradientCycle(dt)
 	print("gradientCycle")
+	sqboot.gProg = sqboot.gProg + dt
+	if sqboot.gProg > sqboot.gSpeed then
+		sqboot.gProg = 0
+		for n = 1, 4, 1 do
+			sqboot.gFuncs[n](n)
+		end
+		local bG = sqboot.bootGradient
+		fx.setBackgroundColor(bG[1],bG[2],bG[3],bG[4])
+		if sqboot.gPop == 4 then
+			sqboot.bounce()
+		else
+			sqboot.gPop = 0
+		end
 	sqboot.gProg = sqboot.gProg + dt
 	if sqboot.gProg > sqboot.gSpeed then
 		sqboot.gProg = 0
