@@ -10,6 +10,7 @@ local store = {}
 store.slides = {}
 store.anims = {}
 store.insts = {}
+local cache = {}
 local fs = love.filesystem
 local fx = love.graphics
 
@@ -108,9 +109,24 @@ function instance:draw(x,y)
 	self.anim.slide:present(self.pos,x,y)
 end
 
-function slides.openBonusCache(loc,ident)
+function slides.openCache(loc,ident)
 	if memmy then
 		fs.createDirectory("cache/slides/"..loc)
 		memmy.addCacheItem("slides",loc,ident)
+		cache.dir = "cache/slides/"..loc.."/"
+		cache.fn = ident
+		cache.num = 1
+		cache.data = {}
 	end
 end
+
+function slides.cache(image)
+	cache.data[cache.num] = image:newImageData()
+	cache.data[cache.num]:encode("png",cache.dir..cache.fn.. "-"..cache.num..".png")
+	cache.num = cache.num + 1
+end
+
+function slides.closeCache()
+	
+end
+

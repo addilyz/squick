@@ -69,7 +69,9 @@ function shred.openTex()
 end
 
 function shred.openSquish()
+	fx.setBlendMode("alpha","alphamultiply")
 	print("squish1")
+	fx.setColor(1,1,1,1)
 	fx.setCanvas(cv[1])
 	fx.clear()
 	fx.push()
@@ -92,6 +94,10 @@ function shred.closeSquish()
 	fx.draw(cv[2],0,0)
 	fx.pop()
 	fx.setBlendMode("alpha")
+end
+
+function shred.getCV(num)
+	return cv[num]
 end
 
 function shred.singleClose()

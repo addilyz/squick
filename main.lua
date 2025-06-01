@@ -47,6 +47,13 @@ sqboot.gFuncs = {}
 sqboot.ready = {false,false,true}
 sqboot.aligned = true
 sqboot.gPop = 0
+sqboot.args = {}
+local cacheFlag = false
+local uptime = 0
+
+function codex.update.uptime(dt)
+	uptime = uptime + dt
+end
 
 function squick.start()
 	print("start")
@@ -60,12 +67,21 @@ end
 function squick.load(args)
 	--nodes.loadMap({surface={{224,246}}})
 	--nodes.codex()
-	for a = 1, #args, 1 do
-		if args[a] == "--refresh-mwl-cache" then 	
-			memmy.loadCache() 
-			slides.openBonusCache(".SPLASHES-MOBILE","love-community/splashes")
+	if type(args) == "table" then
+		sqboot.parseargs = true
+		sqboot.args = {}
+		for n = 1, #args, 1 do
+			sqboot.args[n] = args[n]
 		end
 	end
+--[[	for a = 1, #args, 1 do
+		if args[a] == "--refresh-cache-mwl" then
+			memmy.loadCache()
+			cacheFlag = true
+			slides.openCache(".SPLASHES-MOBILE","love2d-community-splashes")
+			sqboot.cacheWithLOVE()
+		end
+	end]]
 	local bG = sqboot.bootGradient
 	fx.setBackgroundColor(bG[1],bG[2],bG[3],bG[4])
 	local page = pages.getPage(500)
@@ -104,10 +120,12 @@ function squick.drawnWithLOVE() --- love-community/splashes
 end
 
 function sqboot.cacheWithLOVE() --- love-community/splashes
-	print("bootWithLOVE")
-	mwlCacheRefresh()
+	print("cacheWithLOVE")
 	splash = o_ten_one({background={0,0,0,1}})
-	splash.onDone = squick.start
+	splash.onDone = mwlCacheClose
+	local page = pages.getPage(5)
+	page.cwl = squick.drawnWithLOVE()
+	mwlCacheRefresh()
 end
 
 function mwlCacheRefresh() -- love-community/splashes
@@ -116,17 +134,46 @@ function mwlCacheRefresh() -- love-community/splashes
 	shred.deriveScalar()
 	shred.setMode("ruin")
 	local shredone = pages.getPage(1)
-	local shredtwo = pages.getPage(1000)
-	codex.handle(draw)
-	codex.
+	local shredtwo = pages.getPage(100)
+	
+	local s = "mwl"
+	local tex = shred.getCV(2)
+	while cacheFlag do
+		splash:update(1/60)
+		pages.draw()
+		tex = shred.getCV(2)
+		slides.cache(tex)
+	end
+	slides.cache(tex)
 end
 
 
-function sqboot.finalizeMemmyCache()
-
+function mwlCacheClose()
+	cacheFlag = false
 end
 
 function codex.update.squickBoot(dt)
+	if uptime > 1 then
+		a = b
+		if sqboot.parseargs then
+			local args = sqboot.args
+			for a = 1, #args, 1 do
+				if args[a] == "--refresh-cache-mwl" then
+					memmy.loadCache()
+					cacheFlag = true
+					slides.openCache(".SPLASHES-MOBILE","love2d-community-splashes")
+					sqboot.cacheWithLOVE()
+				end
+     	end
+			sqboot.parseargs = false
+		else
+			codex.update.squickBoot = sqboot.update
+		end
+	end
+	sqboot.gradientStep(dt)
+end
+
+function sqboot.update(dt)
 	sqboot.gradientStep(dt)
 end
 
