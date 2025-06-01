@@ -21,7 +21,7 @@ squick.internal.height = 180
 squick.mwl = {}
 squick.mwl.width = 600
 squick.mwl.height = 450
-test = {
+closeDialog = {
 	defaultSel = 2,
 	title = "Quit Editor",
 	key = "exitdialog",
@@ -121,11 +121,10 @@ end
 
 function sqboot.cacheWithLOVE() --- love-community/splashes
 	print("bootWithLOVE")
-	mwlCacheRefresh()
 	splash = o_ten_one({background={0,0,0,1}})
 	splash.onDone = mwlCacheClose
 	local page = pages.getPage(5)
-	page.cwl = squick.drawnWithLOVE()
+	page.cwl = squick.drawnWithLOVE
 	mwlCacheRefresh()
 end
 
@@ -136,7 +135,6 @@ function mwlCacheRefresh() -- love-community/splashes
 	shred.setMode("ruin")
 	local shredone = pages.getPage(1)
 	local shredtwo = pages.getPage(100)
-	
 	local s = "mwl"
 	local tex = shred.getCV(2)
 	while cacheFlag do
@@ -165,7 +163,7 @@ function codex.update.squickBoot(dt)
 					slides.openCache(".SPLASHES-MOBILE","love2d-community-splashes")
 					sqboot.cacheWithLOVE()
 				end
-     	end
+			end
 			sqboot.parseargs = false
 		else
 			codex.update.squickBoot = sqboot.update
@@ -271,19 +269,6 @@ end
 
 function sqboot.gradientCycle(dt)
 	print("gradientCycle")
-	sqboot.gProg = sqboot.gProg + dt
-	if sqboot.gProg > sqboot.gSpeed then
-		sqboot.gProg = 0
-		for n = 1, 4, 1 do
-			sqboot.gFuncs[n](n)
-		end
-		local bG = sqboot.bootGradient
-		fx.setBackgroundColor(bG[1],bG[2],bG[3],bG[4])
-		if sqboot.gPop == 4 then
-			sqboot.bounce()
-		else
-			sqboot.gPop = 0
-		end
 	sqboot.gProg = sqboot.gProg + dt
 	if sqboot.gProg > sqboot.gSpeed then
 		sqboot.gProg = 0
