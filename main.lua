@@ -105,18 +105,20 @@ end
 
 function sqboot.cacheWithLOVE() --- love-community/splashes
 	print("bootWithLOVE")
-	mwlCachePreShredUp()
+	mwlCacheRefresh()
 	splash = o_ten_one({background={0,0,0,1}})
 	splash.onDone = squick.start
 end
 
-function mwlCachePreShredUp()
-	print("Cache shredUp")
+function mwlCacheRefresh() -- love-community/splashes
+	print("Made With LOVE Cache")
 	shred.init(squick.mwl.width,squick.mwl.height)
 	shred.deriveScalar()
 	shred.setMode("ruin")
 	local shredone = pages.getPage(1)
 	local shredtwo = pages.getPage(1000)
+	codex.handle(draw)
+	codex.
 end
 
 
@@ -221,15 +223,19 @@ end
 
 function sqboot.gradientCycle(dt)
 	print("gradientCycle")
-	for n = 1, 4, 1 do
-		sqboot.gFuncs[n](n)
-	end
-	local bG = sqboot.bootGradient
-	fx.setBackgroundColor(bG[1],bG[2],bG[3],bG[4])
-	if sqboot.gPop == 4 then
-		sqboot.bounce()
-	else
-		sqboot.gPop = 0
+	sqboot.gProg = sqboot.gProg + dt
+	if sqboot.gProg > sqboot.gSpeed then
+		sqboot.gProg = 0
+		for n = 1, 4, 1 do
+			sqboot.gFuncs[n](n)
+		end
+		local bG = sqboot.bootGradient
+		fx.setBackgroundColor(bG[1],bG[2],bG[3],bG[4])
+		if sqboot.gPop == 4 then
+			sqboot.bounce()
+		else
+			sqboot.gPop = 0
+		end
 	end
 end
 
