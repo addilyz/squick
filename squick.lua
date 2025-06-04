@@ -1,5 +1,5 @@
 
-require "squick/codex/codex"
+require "squick/submodules/addilyz/codex/codex"
 require "squick/core/memmy"
 require "squick/core/shredfx"
 require "squick/core/slides"
@@ -8,7 +8,7 @@ require "squick/core/bubble"
 require "squick/core/confman"
 --nodes = require "game/rpg/nodes"
 --require "squick/tools/stage"
-o_ten_one = require "squick/splashes/o-ten-one" -- love-community/splashes
+o_ten_one = require "squick/submodules/love-community/splashes/o-ten-one" -- love-community/splashes
 
 squick = {}
 squick.screen = {}
