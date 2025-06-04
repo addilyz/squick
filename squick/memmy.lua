@@ -13,6 +13,9 @@ local window = {0,0,0,0}
 local cache = {}
 local cachebuffer = {}
 local cachert = {}
+local lfsWrite = love.filesystem.load("squick/threads/fs-write.lua")()
+local lfsThreads = {}
+local lfsChannels = {}
 
 function codex.load.memmy()
 	index.structure()
@@ -220,7 +223,19 @@ function memmy.tabtofile(table,dir)
 		end
 	end
 	ostring = ostring .. "return t"
-	fs.write(dir,ostring)
+	lfsThreads[#lfsThreads+1] = love.thread.newThread(lfsWrite)
+	lfsThreads[#lfsThreads]:start(ostring,dir)
+	lfsChannels[#lfsChannels+1] = love.thread.getChannel(dir)
+end
+
+function codex.update.memmy(dt)
+	for n = 1, #lfsChannels, 1 do
+		if lfsChannels[n]:pop() == true then
+			table.remove(lfsChannels,n)
+			table.remove(lfsThreads,n)
+			return
+		end
+	end
 end
 
 function memmy.ttfrecurse(table,name)
