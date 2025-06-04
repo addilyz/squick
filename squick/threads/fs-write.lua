@@ -7,3 +7,4 @@ while flag == false do
 	channel:push(flag)
 end
 ]]
+return threadCode
