@@ -27,14 +27,6 @@ function squick.load(args)
 			sqboot.args[n] = args[n]
 		end
 	end
---[[	for a = 1, #args, 1 do
-		if args[a] == "--refresh-cache-mwl" then
-			memmy.loadCache()
-			cacheFlag = true
-			slides.openCache(".SPLASHES-MOBILE","love2d-community-splashes")
-			sqboot.cacheWithLOVE()
-		end
-	end]]
 	local bG = sqboot.bootGradient
 	fx.setBackgroundColor(bG[1],bG[2],bG[3],bG[4])
 	local page = pages.getPage(500)
@@ -211,7 +203,7 @@ function sqboot.gradientEscape()
 	if sqboot.gPop == 4 then
 		fs.createDirectory("logs")
 		local lstring = os.date('%Y%m%d-%H%M-%S')
-		memmy.tabtofile(sqboot,"logs/sqboot" .. lstring)
+		memmy.tableToFile(sqboot,"logs/sqboot" .. lstring)
 		pages.expunge("squickBoot")
 		codex.delete("squickBoot")
 		print("squickBoot deleted!")

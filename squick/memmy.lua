@@ -13,9 +13,33 @@ local window = {0,0,0,0}
 local cache = {}
 local cachebuffer = {}
 local cachert = {}
+local thread
+local threadInactive = true
+local ttfrecurse = love.filesystem.load("squick/ttfrecurse-love-thread.lua")()
+local threadQueue = {}
+local threadLog = {}
 
 function codex.load.memmy()
 	index.structure()
+end
+
+function codex.update.memmy(dt)
+	if threadInactive == false then
+		local complete = love.thread.getChannel('complete'):pop()
+		if complete then
+			threadInactive = true
+			if type(threadQueue[1]) == "table" then
+				local bool = memmy[threadQueue[1][1]](threadQueue[1][2],threadQueue[1][3])
+				if bool == true then
+					table.remove(threadQueue,1)
+				else
+					love.thread.getChannel('complete'):push(complete)
+					threadInactive = false
+					print("threadQueue Error!")
+				end
+			end
+		end
+	end
 end
 
 function memmy.initDirectory(loc)
@@ -194,8 +218,17 @@ function index.dir(d,route,cstr)
 	end
 end
 
-function memmy.tabtofile(table,dir)
-	local ostring = "local t = {}\n"
+function memmy.tableToFile(table,dir)
+	if threadInactive then
+		threadInactive = false
+		thread = love.thread.newThread(ttfrecurse)
+		thread:start(table,dir)
+		return true, "started"
+	else
+		threadQueue[#threadQueue+1] = {"tableToFile",table,dir}
+		return false, "queued"
+	end
+	--[[local ostring = "local t = {}\n"
 	for k,v in next, table do
 		if type(k) == "string" then
 			ostring = ostring .. "t." .. k .. " = "
@@ -220,10 +253,10 @@ function memmy.tabtofile(table,dir)
 		end
 	end
 	ostring = ostring .. "return t"
-	fs.write(dir,ostring)
+	fs.write(dir,ostring)]]
 end
 
-function memmy.ttfrecurse(table,name)
+--[[function memmy.ttfrecurse(table,name)
 	local ostring = ""
 	for k,v in next, table do
 		if type(k) == "string" then
@@ -249,4 +282,4 @@ function memmy.ttfrecurse(table,name)
 		end
 	end
 	return ostring
-end
+end ]]
