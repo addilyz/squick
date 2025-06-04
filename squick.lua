@@ -8,7 +8,7 @@ require "squick/core/bubble"
 require "squick/core/confman"
 --nodes = require "game/rpg/nodes"
 --require "squick/tools/stage"
-o_ten_one = require "squick/submodules/love-community/splashes/o-ten-one" -- love-community/splashes
+o_ten_one = require "squick/submodules/love2d-community/splashes/o-ten-one" -- love-community/splashes
 
 squick = {}
 squick.screen = {}
@@ -34,7 +34,7 @@ closeDialog = {
 local fs = love.filesystem
 local fx = love.graphics
 fx.setDefaultFilter("nearest","nearest")
-require "squick/boot"
+require "squick/core/boot"
 local pages = codex.pages
 
 
