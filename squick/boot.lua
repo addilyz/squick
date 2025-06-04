@@ -9,7 +9,7 @@ sqboot.bootGradient = {1,1,1,1}
 sqboot.gSpeed = 1/60
 sqboot.gProg = 0
 sqboot.gFuncs = {}
-sqboot.ready = {false,false,false}
+sqboot.ready = {false,false,true}
 sqboot.aligned = true
 sqboot.gPop = 0
 sqboot.args = {}
@@ -154,7 +154,7 @@ function sqboot.bounce()
 		gD[1] = -gS[1]
 		gD[2] = -gS[2]
 		gD[3] = -gS[3]
-		gD[4] = -gD[4]
+		gD[4] = -gS[4]
 	else
 		local gD = sqboot.gradientDirection
 		local gS = sqboot.gStore
@@ -174,7 +174,11 @@ function sqboot.bounce()
 	ope[2] = store[2]
 	ope[3] = store[3]
 	ope[4] = store[4]
-	sqboot.setGradient()
+	sqboot.bootGradient[1] = ope[1] + sqboot.gradientDirection[1]
+	sqboot.bootGradient[2] = ope[2] + sqboot.gradientDirection[2]
+	sqboot.bootGradient[3] = ope[3] + sqboot.gradientDirection[3]
+	sqboot.bootGradient[4] = ope[4] + sqboot.gradientDirection[4]
+	sqboot.setGradient(dt)
 end
 
 function sqboot.tick(dt)
@@ -192,7 +196,7 @@ function sqboot.setGradient(dt)
 	for n = 1, 4, 1 do
 		if sqboot.gradientDirection[n] < 0 then
 			sqboot.gFuncs[n] = sqboot.gradientDown
-		elseif sqboot.gradientDirection == 0 then
+		elseif sqboot.gradientDirection[n] == 0 then
 			sqboot.gFuncs[n] = sqboot.empty
 		else
 			sqboot.gFuncs[n] = sqboot.gradientUp
