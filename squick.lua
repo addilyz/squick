@@ -1,14 +1,14 @@
 
-require "codex/codex"
-require "squick/memmy"
-require "squick/shredfx"
-require "squick/slides"
--- require "tools/chart"
-require "squick/bubble"
-require "squick/confman"
+require "squick/codex/codex"
+require "squick/core/memmy"
+require "squick/core/shredfx"
+require "squick/core/slides"
+-- require "squick/tools/chart"
+require "squick/core/bubble"
+require "squick/core/confman"
 --nodes = require "game/rpg/nodes"
---require "tools/stage"
-o_ten_one = require "splashes/o-ten-one" -- love-community/splashes
+--require "squick/tools/stage"
+o_ten_one = require "squick/splashes/o-ten-one" -- love-community/splashes
 
 squick = {}
 squick.screen = {}
