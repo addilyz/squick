@@ -233,6 +233,7 @@ function codex.update.memmy(dt)
 		if lfsChannels[n]:pop() == true then
 			table.remove(lfsChannels,n)
 			table.remove(lfsThreads,n)
+			print("cash money")
 			return
 		end
 	end

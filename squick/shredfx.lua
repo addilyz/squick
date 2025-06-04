@@ -70,7 +70,7 @@ end
 
 function shred.openSquish()
 	fx.setBlendMode("alpha","alphamultiply")
-	print("squish1")
+	--print("squish1")
 	fx.setColor(1,1,1,1)
 	fx.setCanvas(cv[1])
 	fx.clear()
@@ -78,7 +78,7 @@ function shred.openSquish()
 end
 
 function shred.closeSquish()
-	print("squish2")
+	--print("squish2")
 	fx.pop()
 	fx.setCanvas()
 	fx.setBlendMode("alpha","premultiplied")
