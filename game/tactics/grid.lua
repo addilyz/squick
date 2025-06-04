@@ -6,8 +6,10 @@ local grid.rot = 0
 local grid.angle = 0
 local fx = love.graphics
 local fs = love.filesystem
+local lt = love.thread
 fs.appendDirectory(true)
-if type(love.filesystem.getInfo("tactics/grid/global")) == "table" then grid.settings = fs.load("tactics/grid/global")() end
+if type(fs.getInfo("squick/tactics/grid/global")) == "table" then grid.settings = fs.load("squick/tactics/grid/global")() end
+local threads = {}
 local rowThread = [[
 ]]
 
@@ -23,8 +25,8 @@ function field:preLoad()
 	if self.useProjectSettings then
 		self.settings = grid.settings
 	end
-	for x = 1, #self, 1 do
-		for y = 1, #self[x], 1 do
+	for y = 1, #self, 1 do
+		for x = 1, #self[y], 1 do
 			
 		end
 	end
