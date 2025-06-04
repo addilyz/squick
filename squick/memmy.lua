@@ -220,6 +220,12 @@ function memmy.tabtofile(table,dir)
 			ostring = ostring .. memmy.ttfrecurse(v,namestring)
 		elseif type(v) == "function" then
 			ostring = ostring .. "nil\n"
+		elseif type(v) == "boolean" then
+			if v then
+				ostring = ostring .. "true\n"
+			else
+				ostring = ostring .. "false\n"
+			end
 		end
 	end
 	ostring = ostring .. "return t"
@@ -261,6 +267,12 @@ function memmy.ttfrecurse(table,name)
 			ostring = ostring .. memmy.ttfrecurse(v,namestring)
 		elseif type(v) == "function" then
 			ostring = ostring .. "nil\n"
+		elseif type(v) == "boolean" then
+			if v then
+				ostring = ostring .. "true\n"
+			else
+				ostring = ostring .. "false\n"
+			end
 		end
 	end
 	return ostring

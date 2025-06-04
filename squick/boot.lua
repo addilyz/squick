@@ -214,7 +214,7 @@ function sqboot.gradientEscape()
 	fx.setBackgroundColor(bG[1],bG[2],bG[3],bG[4])
 	if sqboot.gPop == 4 then
 		fs.createDirectory("logs")
-		local lstring = os.date('%Y%m%d-%H%M-%S')
+		local lstring = os.date('-%Y-%m-%d-%H.%M.%S')
 		memmy.tabtofile(sqboot,"logs/sqboot" .. lstring)
 		pages.expunge("squickBoot")
 		codex.delete("squickBoot")
