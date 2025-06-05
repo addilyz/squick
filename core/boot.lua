@@ -73,7 +73,7 @@ function squick.drawnWithLOVE() --- love-community/splashes
 end
 
 function sqboot.cacheWithLOVE() --- love-community/splashes
-	print("bootWithLOVE")
+	print("cacheWithLOVE")
 	splash = o_ten_one({background={0,0,0,1}})
 	splash.onDone = mwlCacheClose
 	local page = pages.getPage(5)
@@ -82,7 +82,7 @@ function sqboot.cacheWithLOVE() --- love-community/splashes
 end
 
 function mwlCacheRefresh() -- love-community/splashes
-	print("Made With LOVE Cache")
+	--print("Made With LOVE Cache")
 	shred.init(squick.mwl.width,squick.mwl.height)
 	shred.deriveScalar()
 	shred.setMode("ruin")
@@ -182,7 +182,7 @@ function sqboot.bounce()
 end
 
 function sqboot.tick(dt)
-	print("tick")
+	--print("tick")
 	sqboot.gradientCycle(dt)
 end
 
@@ -227,7 +227,7 @@ function sqboot.gradientEscape()
 end
 
 function sqboot.gradientCycle(dt)
-	print("gradientCycle")
+	--print("gradientCycle")
 	sqboot.gProg = sqboot.gProg + dt
 	if sqboot.gProg > sqboot.gSpeed then
 		sqboot.gProg = 0
@@ -245,7 +245,7 @@ function sqboot.gradientCycle(dt)
 end
 
 function sqboot.gradientUp(n)
-	print("gradientUp["..tostring(n).."]")
+	--print("gradientUp["..tostring(n).."]")
 	if sqboot.bootGradient[n] < sqboot.gradientDestination[n] then
 		sqboot.bootGradient[n] = sqboot.bootGradient[n] + sqboot.gradientDirection[n]
 	else
@@ -255,7 +255,7 @@ function sqboot.gradientUp(n)
 end
 
 function sqboot.gradientDown(n)
-	print("gradientDown["..tostring(n).."]")
+	--print("gradientDown["..tostring(n).."]")
 	if sqboot.bootGradient[n] > sqboot.gradientDestination[n] then
 		sqboot.bootGradient[n] = sqboot.bootGradient[n] + sqboot.gradientDirection[n]
 	else
@@ -265,7 +265,7 @@ function sqboot.gradientDown(n)
 end
 
 function sqboot.empty(n)
-	print("empty["..tostring(n).."]")
+	--print("empty["..tostring(n).."]")
 	sqboot.gPop = sqboot.gPop + 1
 end
 
