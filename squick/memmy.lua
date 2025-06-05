@@ -5,7 +5,7 @@ local file = {}
 file.__index = file
 local fs = love.filesystem
 local fx = love.graphics
-local struct = fs.load("squick/project/index.lua")()
+local struct = fs.load("game/index.lua")()
 struct.tags = {{"code blob",".lua"},{"dir","/"},{"plaintext",".txt"}}
 local catalog = {}
 local root = {}
@@ -13,7 +13,7 @@ local window = {0,0,0,0}
 local cache = {}
 local cachebuffer = {}
 local cachert = {}
-local lfsWrite = love.filesystem.load("squick/core/threads/fs-write.lua")()
+local lfsWrite = love.filesystem.load("squick/threads/fs-write.lua")()
 local lfsThreads = {}
 local lfsChannels = {}
 
