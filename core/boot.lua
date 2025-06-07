@@ -18,8 +18,6 @@ local fx = love.graphics
 local fs = love.filesystem
 
 function squick.load(args)
-	--nodes.loadMap({surface={{224,246}}})
-	--nodes.codex()
 	if type(args) == "table" then
 		sqboot.parseargs = true
 		sqboot.args = {}
@@ -27,14 +25,6 @@ function squick.load(args)
 			sqboot.args[n] = args[n]
 		end
 	end
---[[	for a = 1, #args, 1 do
-		if args[a] == "--refresh-cache-mwl" then
-			memmy.loadCache()
-			cacheFlag = true
-			slides.openCache(".SPLASHES-MOBILE","love2d-community-splashes")
-			sqboot.cacheWithLOVE()
-		end
-	end]]
 	local bG = sqboot.bootGradient
 	fx.setBackgroundColor(bG[1],bG[2],bG[3],bG[4])
 	local page = pages.getPage(500)
@@ -82,7 +72,6 @@ function sqboot.cacheWithLOVE() --- love-community/splashes
 end
 
 function mwlCacheRefresh() -- love-community/splashes
-	--print("Made With LOVE Cache")
 	shred.init(squick.mwl.width,squick.mwl.height)
 	shred.deriveScalar()
 	shred.setMode("ruin")
@@ -96,7 +85,7 @@ function mwlCacheRefresh() -- love-community/splashes
 		tex = shred.getCV(2)
 		slides.cache(tex)
 	end
-	slides.cache(tex)
+	slides.closeCache()
 end
 
 
@@ -105,15 +94,14 @@ function mwlCacheClose()
 end
 
 function codex.update.squickBoot(dt)
-	if squick.uptime > 1 then
-		a = b
+	if squick.uptime > .1 then
 		if sqboot.parseargs then
 			local args = sqboot.args
 			for a = 1, #args, 1 do
 				if args[a] == "--refresh-cache-mwl" then
 					memmy.loadCache()
 					cacheFlag = true
-					slides.openCache(".SPLASHES-MOBILE","love2d-community-splashes")
+					slides.openCache("SPLASHES_PRESHRED","love2d-community-splashes")
 					sqboot.cacheWithLOVE()
 				end
 			end

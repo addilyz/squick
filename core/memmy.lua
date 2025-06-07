@@ -46,8 +46,9 @@ function memmy.loadCache()
 end
 
 function memmy.addCacheItem(lib,dir,ident)
-	local ds = "cache" .. dir
-	ds = string.gsub(ds,"/","_")
+	local ds = string.gsub(dir,"/","_")
+	ds = string.gsub(dir,"-","_")
+	local dir = "cache/" .. dir
 	cachert[ds] = {}
 	cachert[ds].ident = ident
 	cachert[ds].dir = dir
@@ -55,8 +56,9 @@ function memmy.addCacheItem(lib,dir,ident)
 end
 
 function memmy.promoteToCacheBuffer(dir)
-	local ds = "cache" .. dir
-	ds = string.gsub(ds,"/","_")
+	local ds = string.gsub(dir,"/","_")
+	ds = string.gsub(dir,"-","_")
+	local dir = "cache/" .. dir
 	cachebuffer[ds] = {}
 	cachebuffer[ds].ident = cachert[ds].ident
 	cachebuffer[ds].dir = cachert[ds].dir
@@ -70,7 +72,6 @@ function memmy.finalizeCacheBuffer()
 		cache[k].ident = v.ident
 		cache[k].dir = v.dir
 		cache[k].lib = v.lib
-		v = nil
 	end
 	memmy.tabtofile(cache,"db/cache")
 end
