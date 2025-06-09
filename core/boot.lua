@@ -19,7 +19,7 @@ local fs = love.filesystem
 
 function squick.load(args)
 	if type(args) == "table" then
-		sqboot.parseargs = true
+		sqboot.parseArgs = true
 		sqboot.args = {}
 		for n = 1, #args, 1 do
 			sqboot.args[n] = args[n]
@@ -95,7 +95,7 @@ end
 
 function codex.update.squickBoot(dt)
 	if squick.uptime > .1 then
-		if sqboot.parseargs then
+		if sqboot.parseArgs then
 			local args = sqboot.args
 			for a = 1, #args, 1 do
 				if args[a] == "--refresh-cache-mwl" then
@@ -105,7 +105,7 @@ function codex.update.squickBoot(dt)
 					sqboot.cacheWithLOVE()
 				end
 			end
-			sqboot.parseargs = false
+			sqboot.parseArgs = false
 		else
 			codex.update.squickBoot = sqboot.update
 		end
