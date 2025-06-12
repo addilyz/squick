@@ -13,6 +13,7 @@ local window = {0,0,0,0}
 local cache = {}
 local cachebuffer = {}
 local cachert = {}
+local cacheFlag = {}
 local lfsWrite = love.filesystem.load("squick/core/threads/fs-write.lua")()
 local lfsThreads = {}
 local lfsChannels = {}
@@ -43,6 +44,10 @@ function memmy.loadCache()
 		cf = fs.load("db/cache")
 	end
 	cache = cf()
+end
+
+function memmy.checkCache(ident)
+	if type(cache[ident]) ~= "nil" then return true else return false end
 end
 
 function memmy.addCacheItem(lib,dir,ident)

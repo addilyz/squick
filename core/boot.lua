@@ -95,14 +95,19 @@ end
 
 function codex.update.squickBoot(dt)
 	if squick.uptime > .1 then
+		memmy.loadCache()
 		if sqboot.parseArgs then
 			local args = sqboot.args
 			for a = 1, #args, 1 do
-				if args[a] == "--refresh-cache-mwl" then
-					memmy.loadCache()
-					cacheFlag = true
-					slides.openCache("SPLASHES_PRESHRED","love2d-community-splashes")
-					sqboot.cacheWithLOVE()
+				local cacheHandle = string.gsub(args[a],"--refresh-cache-","")
+				if cacheHandle ~= args[a] then
+					if memmy.cacheSuggestions(cacheHandle) then
+						
+					elseif cacheHandle == "SPLASHES" then -- love2d-community/splashes
+						cacheFlag = true
+						slides.openCache("SPLASHES","love2d-community-splashes")
+						sqboot.cacheWithLOVE()
+					end
 				end
 			end
 			sqboot.parseArgs = false
@@ -121,7 +126,7 @@ function sqboot.shredUp()
 	print("shredUp")
 	shred.init(squick.mwl.width,squick.mwl.height)
 	shred.deriveScalar()
-	shred.setMode("ruin")
+	shred.setMode("ruin","SPLASHES")
 end
 
 function sqboot.bounce()

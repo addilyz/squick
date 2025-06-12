@@ -25,10 +25,15 @@ function shred.init(iw,ih,scale)
 	scalar = scale
 end
 
-function shred.setMode(a)
+function shred.setMode(a,cacheIdent)
 	print("shred setMode: " .. a)
-	if a == "ruin" then
+	if a == "ruin" then -- these items should be cached incase of no cv availability/compatibility!
 		shred.mode = "ruin"
+		if type(cacheIdent) == "nil" then
+			print("missing cacheIdentity on setMode(\"ruin\")!")
+		elseif memmy.checkCache(cacheIdent) == false then
+			print("missing library-suggested cache item, run --refresh-cache-"..cacheIdent.. " to build.")
+		end
 		cv[1] = fx.newCanvas(ws.width,ws.height)
 		cv[2] = fx.newCanvas(vs.width,vs.height)
 		shred.textwoavailable = false
