@@ -1,5 +1,7 @@
 
+CODEX_PATH = "squick/submodules/addilyz/codex"
 require "squick/submodules/addilyz/codex/codex"
+CODEX_PATH = nil
 require "squick/core/memmy"
 require "squick/core/shredfx"
 require "squick/core/slides"
