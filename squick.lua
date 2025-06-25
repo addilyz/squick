@@ -1,12 +1,15 @@
 
-CODEX_PATH = "squick/submodules/addilyz/codex"
+local PATH = "squick/submodules/addilyz"
+CODEX_PATH = PATH .. "codex"
 require "squick/submodules/addilyz/codex/codex"
 CODEX_PATH = nil
 require "squick/core/memmy"
-require "squick/core/shredfx"
-require "squick/core/slides"
+GRAFFICKS_PATH = PATH .. GRAFFICKS
+require "squick/submodules/addilyz/grafficks/shredfx"
+require "squick/submodules/addilyz/grafficks/slides"
+require "squick/submodules/addilyz/grafficks/bubble"
+GRAFFICKS_PATH = nil
 -- require "squick/tools/chart"
-require "squick/core/bubble"
 require "squick/core/confman"
 --nodes = require "game/rpg/nodes"
 --require "squick/tools/stage"
