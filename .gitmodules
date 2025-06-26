@@ -8,3 +8,6 @@
 [submodule "submodules/EngineerSmith/nativefs"]
 	path = submodules/EngineerSmith/nativefs
 	url = https://github.com/EngineerSmith/nativefs
+[submodule "submodules/addilyz/grafficks"]
+	path = submodules/addilyz/grafficks
+	url = https://github.com/addilyz/grafficks
