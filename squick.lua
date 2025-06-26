@@ -36,9 +36,7 @@ closeDialog = {
 	selOuts = {love.event.quit, bubble.close},
 	selArgs = {{},{}}
 }
-local fs = love.filesystem
-local fx = love.graphics
-fx.setDefaultFilter("nearest","nearest")
+love.graphics.setDefaultFilter("nearest","nearest")
 require "squick/core/boot"
 local pages = codex.pages
 
