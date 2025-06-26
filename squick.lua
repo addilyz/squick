@@ -1,10 +1,10 @@
 
-local PATH = "squick/submodules/addilyz"
+local PATH = "squick/submodules/addilyz/"
 CODEX_PATH = PATH .. "codex"
 require "squick/submodules/addilyz/codex/codex"
 CODEX_PATH = nil
 require "squick/core/memmy"
-GRAFFICKS_PATH = PATH .. GRAFFICKS
+GRAFFICKS_PATH = PATH .. "grafficks"
 require "squick/submodules/addilyz/grafficks/shredfx"
 require "squick/submodules/addilyz/grafficks/slides"
 require "squick/submodules/addilyz/grafficks/bubble"
