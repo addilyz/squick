@@ -2,6 +2,7 @@
 local PATH = "squick/submodules/addilyz/"
 CODEX_PATH = PATH .. "codex"
 require "squick/submodules/addilyz/codex/codex"
+local sugar = require "squick/submodules/addilyz/codex/sugar"
 CODEX_PATH = nil
 require "squick/core/memmy"
 GRAFFICKS_PATH = PATH .. "grafficks"
@@ -36,10 +37,12 @@ closeDialog = {
 	selOuts = {love.event.quit, bubble.close},
 	selArgs = {{},{}}
 }
+sugar.bootloader("squick/core/boot")
 love.graphics.setDefaultFilter("nearest","nearest")
-require "squick/core/boot"
 local pages = codex.pages
 
+function squick.load()
+end
 
 function codex.update.uptime(dt)
 	squick.uptime = squick.uptime + dt
