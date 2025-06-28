@@ -5,15 +5,18 @@ local sqboot = {} -- bootloader splash
 local qb = sqboot
 local cacheFlag = false
 local splashflags = {true, true, true}
-local targetColor = {}
-local color = {0,0,0,1}
-local startColor = love.graphics.getBackgroundColor()
-local speedColor = {.01,.01,.01}
+local alpha = 0
+local alphaTick = .01
 local lg = love.graphics
 local fs = love.filesystem
+local bgi = lg.newImage("squick/assets/image/bg/boot.jpeg")
 
 function qb.draw()
-	lg.setColor(color[1],color[2],color[3],color[4])
+	lg.setColor(1,1,1,alpha)
+	love.graphics.push()
+	love.graphics.scale(100)
+	love.graphics.draw(bgi,0,0)
+	love.graphics.pop()
 	lg.setColor(1,1,1,1)
 	lg.print("working",100,100)
 end
@@ -23,7 +26,10 @@ function qb.load()
 	page.bootloader = qb.draw
 end
 
-qb.update()
+function qb.update(dt)
+	alpha = alpha + dt
+	if alpha > 1 then qb.bootWithLOVE() codex.delete("bootloader") end
+end
 
 function qb.bootWithLOVE() --- love-community/splashes
 	print("bootWithLOVE")
