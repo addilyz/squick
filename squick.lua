@@ -41,7 +41,14 @@ sugar.bootloader("squick/core/boot")
 love.graphics.setDefaultFilter("nearest","nearest")
 local pages = codex.pages
 
+local startEtch = function()
+	print("hi")
+	require "squick/tools/etch"
+end
+
 function squick.load()
+	sugar.dna.add("-e",startEtch)
+	sugar.dna.add("--etch",startEtch)
 end
 
 function codex.update.uptime(dt)
