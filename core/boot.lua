@@ -22,7 +22,7 @@ function qb.draw()
 end
 
 function qb.load()
-	local page = codex.pages.getPage(4)
+	local page = codex.pages.getPage(2)
 	page.bootloader = qb.draw
 end
 
@@ -34,6 +34,7 @@ end
 function qb.bootWithLOVE() --- love-community/splashes
 	print("bootWithLOVE")
 	splash = o_ten_one({background={0.239,0.059,0.239,1}})
+	lg.setBackgroundColor({0.239,0.059,0.239,1})
 	splash.onDone = squick.start
 	local page = pages.getPage(5)
 	codex.update.WithLOVE = sqboot.updateWithLOVE

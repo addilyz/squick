@@ -6,7 +6,6 @@ local sugar = require "squick/submodules/addilyz/codex/sugar"
 CODEX_PATH = nil
 require "squick/core/memmy"
 GRAFFICKS_PATH = PATH .. "grafficks"
-require "squick/submodules/addilyz/grafficks/shredfx"
 require "squick/submodules/addilyz/grafficks/slides"
 require "squick/submodules/addilyz/grafficks/bubble"
 GRAFFICKS_PATH = nil
@@ -37,31 +36,66 @@ closeDialog = {
 	selOuts = {love.event.quit, bubble.close},
 	selArgs = {{},{}}
 }
+local etch = {}
 sugar.bootloader("squick/core/boot")
-love.graphics.setDefaultFilter("nearest","nearest")
+lg = love.graphics
+lg.setDefaultFilter("nearest","nearest")
 local pages = codex.pages
 
-local startEtch = function()
+local startEtch = function(args)
 	print("hi")
-	require "squick/tools/etch"
+	etch = require "squick/tools/etch"
+	etch.load(args)
+	codex.add("etch",etch)
+end
+
+local startSlider = function(args)
+	print("yoooo  uh huh")
+	slider = require "squick/tools/slider"
+	slider.load(args)
+	codex.add("slider",slider)
 end
 
 function squick.load()
 	sugar.dna.add("-e",startEtch)
 	sugar.dna.add("--etch",startEtch)
+	sugar.dna.add("-s",startSlider)
+	sugar.dna.add("--slider",startSlider)
 end
 
 function codex.update.uptime(dt)
 	squick.uptime = squick.uptime + dt
 end
-
+local cv = lg.newCanvas()
+local fad = 0
 function squick.start()
 	print("start")
 	codex.delete("WithLOVE")
 	pages.expunge("WithLOVE")
 	codex.delete("shred")
 	pages.expunge("shred")
-	shred.init(squick.internal.width,squick.internal.height,"notRuin")
+	codex.delete("bootloader")
+	pages.expunge("bootloader")
+	cv = lg.newCanvas(squick.internal.width,squick.internal.height)
+	local low = pages.getPage(1)
+	local high = pages.getPage(10000)
+	codex.update.fader = function(dt)
+		fad = fad + dt/5
+		if fad > 1 then fad = 1 codex.update.fader = nil end
+	end
+	low.squick = function()
+		lg.setCanvas(cv)
+		lg.setColor(0,0,0,fad)
+		lg.rectangle("fill",0,0,240,180)
+		lg.setColor(1,1,1,1)
+	end
+	high.squick = function()
+		lg.setCanvas()
+		lg.push()
+		lg.scale(lg.getWidth()/240)
+		lg.draw(cv)
+		lg.pop()
+	end
 end
 
 function squick.keypressed(k)
