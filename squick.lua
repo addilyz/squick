@@ -49,18 +49,18 @@ local startEtch = function(args)
 	codex.add("etch",etch)
 end
 
-local startSlider = function(args)
+local startBoxer = function(args)
 	print("yoooo  uh huh")
-	slider = require "squick/tools/slider"
-	slider.load(args)
-	codex.add("slider",slider)
+	boxer = require "squick/tools/boxer"
+	boxer.load(args)
+	codex.add("boxer",boxer)
 end
 
 function squick.load()
 	sugar.dna.add("-e",startEtch)
 	sugar.dna.add("--etch",startEtch)
-	sugar.dna.add("-s",startSlider)
-	sugar.dna.add("--slider",startSlider)
+	sugar.dna.add("-b",startBoxer)
+	sugar.dna.add("--boxer",startBoxer)
 end
 
 function codex.update.uptime(dt)
