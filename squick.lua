@@ -4,14 +4,10 @@ CODEX_PATH = PATH .. "codex"
 require "squick/submodules/addilyz/codex/codex"
 local sugar = require "squick/submodules/addilyz/codex/sugar"
 CODEX_PATH = nil
-require "squick/core/memmy"
 GRAFFICKS_PATH = PATH .. "grafficks"
 require "squick/submodules/addilyz/grafficks/slides"
 require "squick/submodules/addilyz/grafficks/bubble"
 GRAFFICKS_PATH = nil
--- require "squick/tools/chart"
-require "squick/core/confman"
---nodes = require "game/rpg/nodes"
 --require "squick/tools/stage"
 o_ten_one = require "squick/submodules/love2d-community/splashes/o-ten-one" -- love-community/splashes
 
@@ -96,6 +92,9 @@ function squick.start()
 		lg.draw(cv)
 		lg.pop()
 	end
+	grid = require "runtime/grid"
+	codex.add("grid",grid)
+	grid.start()
 end
 
 function squick.keypressed(k)
